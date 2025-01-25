@@ -6,12 +6,18 @@ export default function LandingPage() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
 
   useEffect(() => {
-    const currTime = new Date().toLocaleTimeString();
-    const morningTime = "00:00:00";
-    const afternoonTime = "12:00:00";
-    const eveningTime = "17:30:00";
+    const currTime = new Date();
+    const morningTime = new Date();
+    morningTime.setHours(0, 0, 0, 0); 
+  
+    const afternoonTime = new Date();
+    afternoonTime.setHours(12, 0, 0, 0); 
+  
+    const eveningTime = new Date();
+    eveningTime.setHours(17, 30, 0, 0); 
+  
     const messages = ["Good Morning, ", "Good Afternoon, ", "Good Evening, "];
-
+  
     if (currTime >= morningTime && currTime < afternoonTime) {
       setWelcomeMessage(messages[0]);
     } else if (currTime >= afternoonTime && currTime < eveningTime) {
