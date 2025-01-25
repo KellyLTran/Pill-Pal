@@ -11,7 +11,7 @@ export default function Navbar() {
 
 
   return (
-    <div style={{fontFamily: 'Montserrat'}} className='w-full shadow-lg mb-0 mt-0 bg-transparent'>
+    <div style={{fontFamily: 'Montserrat', position: "fixed", top: 0}} className='w-full shadow-lg mb-0 mt-0 bg-transparent'>
       <div className='container mx-auto flex flex-row justify-center items-center h-16 px-4'>
         <Link 
           to="/" 

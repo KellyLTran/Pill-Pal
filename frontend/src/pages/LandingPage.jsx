@@ -22,23 +22,10 @@ export default function LandingPage() {
   }, []); // Empty dependency array ensures it runs once when the component mounts.
 
   return (
-    <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col items-center pt-3 text-center text-white'>
+    <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col items-center justify-center pt-3 text-center text-white'>
       <div>
         <h1 className='mb-3 text-3xl'>{welcomeMessage} NAME GOES HERE</h1>
       </div>
-
-      <Link 
-        to="/login" 
-        className='text-white hover:text-slate-300 px-4 py-2 rounded transition duration-300'
-      >
-        Login
-      </Link>
-      <Link 
-        to="/signup" 
-        className='text-white hover:text-slate-300 px-4 py-2 rounded transition duration-300'
-      >
-        Signup
-      </Link>
 
       <Graph/>
     </div>
