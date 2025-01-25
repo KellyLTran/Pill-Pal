@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Graph from '../components/Graph'
+import { Button } from 'react-bootstrap';
+import user from '../lib/user'
+import AddInfo from '../components/AddInfo';
 
 export default function LandingPage() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
@@ -33,7 +36,16 @@ export default function LandingPage() {
         <h1 className='mb-3 text-3xl'>{welcomeMessage} NAME GOES HERE</h1>
       </div>
 
-      <Graph/>
+      <div className="flex flex-row">
+        <AddInfo/>
+        <Graph/>
+      </div>
+      
+
+      <Button
+        onClick={user}
+      />
+
     </div>
   );
 }

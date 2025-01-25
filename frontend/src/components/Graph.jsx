@@ -11,9 +11,9 @@ const Graph = () => {
 
   return (
     <div style={{ 
-      width: '500px',  // Fixed container width
+      width: '500px', 
       height: '400px', 
-      overflow: 'auto' // Enables both horizontal and vertical scrolling if needed
+      overflow: 'auto'
     }}>
       <ResponsiveContainer width={data.length * 80} height={350}>
         <LineChart data={data}>
