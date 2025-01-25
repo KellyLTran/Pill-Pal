@@ -25,7 +25,7 @@ export const getMedication = async (req, res) => {
     if (!medication) {
       return res.status(404).json({ message: 'No medication exists.' });
     }
-
+    
     res.status(200).json(medication);
   } catch (error) {
     res.status(500).json({ message: error.message }); // Handle errors

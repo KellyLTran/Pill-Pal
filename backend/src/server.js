@@ -3,6 +3,7 @@ import express from 'express'
 import authRouter from './routes/auth.route.js';
 import medicationRouter from './routes/medication.route.js';
 import userRouter from './routes/user.route.js'
+import entryRouter from './routes/entry.route.js'
 
 import dotenv from 'dotenv'
 
@@ -28,6 +29,7 @@ app.use(cors({
 app.use('/api/auth', authRouter);
 app.use('/api/medication', medicationRouter);
 app.use('/api/user', userRouter);
+app.use('/api/entry', entryRouter)
 
 app.listen(PORT, () => {
   console.log("Began server on port ", PORT);
