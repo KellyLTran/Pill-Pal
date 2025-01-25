@@ -8,7 +8,8 @@ import { axiosInstance } from '../lib/axios';
 
 export default function LandingPage() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
-  const [allMeds, setAllMeds] = useState([]);
+  const [allMeds, setAllMeds] = useState([]); //list of all meds
+  const [selectedMed, setSelectedMed] = useState(""); //ID of the pill selected
 
   useEffect(() => {
     const currTime = new Date();
@@ -40,6 +41,9 @@ export default function LandingPage() {
     })
   }, []); 
 
+
+
+  
   return (
     <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col items-center justify-center pt-3 text-center text-white'>
       <div>
@@ -47,14 +51,15 @@ export default function LandingPage() {
       </div>
 
       <div className="flex flex-row">
-        <AddInfo allMeds={allMeds}/>
+        <AddInfo allMeds={allMeds} setSelectedMed={setSelectedMed}/>
         <Graph/>
       </div>
       
 
-      <Button
-        onClick={user}
-      />
+      {/* <Button 
+      style={{backgroundColor: "white", color: "black", border: "none"}} 
+      disabled={selectedMed == ""}
+      onClick={() => {axiosInstance.post(`/entry/notARealUser/${selectedMed}/`)}}> Record Entry</Button> */}
 
     </div>
   );

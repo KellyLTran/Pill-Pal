@@ -3,8 +3,7 @@ import {Button, Dropdown, Form, DropdownButton} from 'react-bootstrap'
 import DatePicker from 'react-datepicker'
 import { useState } from 'react'
 
-const AddInfo = ({allMeds}) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+const AddInfo = ({allMeds, setSelectedMed}) => {
   const [displayPill, setDisplayPill] = useState("");
 
   return (
@@ -17,7 +16,7 @@ const AddInfo = ({allMeds}) => {
                     <DropdownButton variant="light" title={displayPill}>
                         {allMeds.map((pill) => {
                             return(
-                                <Dropdown.Item onClick={() => setDisplayPill(pill.name)}>
+                                <Dropdown.Item onClick={() => {setDisplayPill(pill.name); setSelectedMed(pill._id); console.log(pill._id);}}>
                                     {pill.name}
                                 </Dropdown.Item>
                             )
