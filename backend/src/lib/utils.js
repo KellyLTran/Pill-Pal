@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 
 const createToken = (userId, res) => {
   const token = jwt.sign({userId}, process.env.JWT_SECRET, {

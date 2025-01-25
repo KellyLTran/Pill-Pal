@@ -49,7 +49,7 @@ export const signup = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-
+  // todo!!! add logout
 }
 
 export const check = (req, res) => {

@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 // Get all medicines
 export const getAllMedications = async (req, res) => {
-  const allMedications = await Med.find({}).sort({createdAt: -1})
+  const allMedications = await Medication.find({}).sort({createdAt: -1})
 
   res.send(200).json({allMedications});
 }
@@ -16,7 +16,7 @@ export const getMedication = async (req, res) => {
         return res.status(404).json({message: 'Invalid parameters!'})
     }
 
-    const medication = await Med.findById(medicationID)
+    const medication = await Medication.findById(medicationID)
 
     if (!medication) {
         return res.status(404).json({message: 'No medication exists.'})

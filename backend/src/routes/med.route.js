@@ -1,13 +1,13 @@
 import express from 'express'
 
-import { } from '../controllers/med.controller.js'
+import { getAllMedications, getMedication} from '../controllers/med.controller.js'
 
 const medRouter = express.Router()
 
 // GET all meds
-medRouter.get('/', getAllMeds);
+medRouter.get('/', getAllMedications);
 
 // GET a single med
-medRouter.get('/:medicationID', getMed);
+medRouter.get('/:medicationID', getMedication);
 
 export default medRouter;
