@@ -5,7 +5,7 @@ import {deleteEntry, addEntry} from "../controllers/entry.controller.js"
 
 const entryRoute = express.Router()
 
-entryRoute.delete("/:entryID", deleteEntry);
+entryRoute.delete("/:userID/:entryID", deleteEntry);
 entryRoute.post("/:userID/:medicationID", addEntry);
 
 export default entryRoute;
