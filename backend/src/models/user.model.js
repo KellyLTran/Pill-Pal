@@ -10,12 +10,18 @@ const useSchema = new mongoose.Schema({
     type: String, 
     required: true
   }, 
+
   password: {
     type: String, 
     required: true
-  }
+  },
+  
+  entryHistory: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Entry'
+  }]
 })
 
-const User = mongoose.model('User', userItem);
+const User = mongoose.model('User', useSchema);
 
 export default User;
