@@ -19,6 +19,24 @@ This is a hackathon project for Swamphacks that took place January 25th 2025. It
 
 ---
 
+## Installation
+
+### Backend
+
+1. Add .env file
+
+2. Install dependencies
+
+```bash 
+
+cd backend
+npm i
+npm run dev
+
+```
+
+---
+
 ## Technology Stack
 
 - **Languages:** JavaScript and Typescript.
