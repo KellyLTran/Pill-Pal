@@ -1,7 +1,7 @@
 import express from 'express'
 
 import {
-  getEntries,
+  getAllEntries,
   getEntry,
   createEntry,
   deleteEntry,
@@ -10,7 +10,7 @@ import {
 const router = express.Router()
 
 // GET all entries
-router.get('entry/', getEntries)
+router.get('entry/', getAllEntries)
 
 // GET a single entry
 router.get('api/:userID/entry/:entryID', getEntry)
