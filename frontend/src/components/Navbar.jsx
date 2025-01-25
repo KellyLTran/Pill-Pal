@@ -11,11 +11,11 @@ export default function Navbar() {
 
 
   return (
-    <div className='w-full shadow-lg mb-4 bg-transparent'>
+    <div style={{fontFamily: 'Montserrat'}} className='w-full shadow-lg mb-0 mt-0 bg-transparent'>
       <div className='container mx-auto flex flex-row justify-center items-center h-16 px-4'>
         <Link 
           to="/" 
-          className='text-blue-500 hover:text-slate-300 px-4 py-2 rounded transition duration-300'
+          className='text-black hover:text-slate-300 px-4 py-2 rounded transition duration-300'
         >
           <div>
             <img className="w-20" src="package-lock.png"/>
@@ -24,9 +24,16 @@ export default function Navbar() {
 
         <Link 
           to="/login" 
-          className='text-blue-500 hover:text-slate-300 px-4 py-2 rounded transition duration-300'
+          className='text-black hover:text-slate-300 px-4 py-2 rounded transition duration-300'
         >
           Login
+        </Link>
+
+        <Link 
+          to="/signup" 
+          className='text-black hover:text-slate-300 px-4 py-2 rounded transition duration-300'
+        >
+          Signup
         </Link>
         
         {authUser && 
