@@ -1,6 +1,6 @@
 import express from 'express'
 import authRouter from './routes/auth.route.js';
-import medRouter from './routes/med.route.js';
+import medRouter from './routes/medication.route.js';
 import userRouter from './routes/user.route.js'
 
 import dotenv from 'dotenv'
