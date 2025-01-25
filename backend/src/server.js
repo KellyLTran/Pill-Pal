@@ -1,11 +1,11 @@
 import express from 'express'
-import authRouter from './routes/auth.route';
-import medRouter from './routes/med.route';
+import authRouter from './routes/auth.route.js';
+import medRouter from './routes/med.route.js';
 
 import dotenv from 'dotenv'
 
-import { connectDB } from './lib/db'
-import { handleError } from './middleware/error';
+import connectDB  from './lib/db.js'
+import { handleError } from './middleware/error.js';
 
 import cors from 'cors'
 

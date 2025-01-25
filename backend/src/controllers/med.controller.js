@@ -1,5 +1,5 @@
-import Med from '../models/med.model'
-const mongoose = require('mongoose')
+import Medication from '../models/medication.model.js'
+import mongoose from 'mongoose'
 
 // Get all medicines
 const getMeds = async (req, res) => {
@@ -72,11 +72,4 @@ const updateMed = async(req, res) => {
     res.status(200).json(medicine)
 }
 
-
-module.exports = {
-    getMeds,
-    getMed,
-    createMed,
-    deleteMed,
-    updateMed
-}
+export default {updateMed, deleteMed, getMed, getMeds, createMed};
