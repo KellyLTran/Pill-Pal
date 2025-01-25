@@ -1,26 +1,13 @@
 import express from 'express'
 
-import { createMed,
-  getMeds,
-  getMed,
-  deleteMed,
-  updateMed } from '../controllers/med.controller.js'
+import { } from '../controllers/med.controller.js'
 
-const router = express.Router()
+const medRouter = express.Router()
 
 // GET all meds
-router.get('/', getMeds)
+medRouter.get('/', getAllMeds);
 
 // GET a single med
-router.get('/:id', getMed)
+medRouter.get('/:medicationID', getMed);
 
-// POST a new med
-router.post('/', createMed)
-
-// DELETE a med
-router.delete('/:id', deleteMed)
-
-// UPDATE a med
-router.patch('/:id', updateMed)
-
-export default router;
+export default medRouter;

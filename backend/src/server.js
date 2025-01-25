@@ -1,6 +1,7 @@
 import express from 'express'
 import authRouter from './routes/auth.route.js';
 import medRouter from './routes/med.route.js';
+import userRouter from './routes/user.route.js'
 
 import dotenv from 'dotenv'
 
@@ -25,6 +26,7 @@ app.use(cors({
 // routes
 app.use('/api/auth', authRouter);
 app.use('/api/meds', medRouter)
+app.use('/api/user', )
 
 app.listen(PORT, () => {
   console.log("Began server on port ", PORT);
