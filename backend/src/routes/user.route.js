@@ -6,7 +6,6 @@ const userRouter = express.Router()
 
 userRouter.get(":userID/history/", getHistory);
 
-
 userRouter.get(":userID/history/:entryID", getEntry);
 userRouter.delete(":userID/history/:entryID", deleteEntry);
 userRouter.post(":userID/history/:entryID", addEntry);
