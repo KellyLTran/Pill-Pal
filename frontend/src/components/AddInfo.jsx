@@ -3,9 +3,9 @@ import {Button, Dropdown, Form, DropdownButton} from 'react-bootstrap'
 import DatePicker from 'react-datepicker'
 import { useState } from 'react'
 
-const AddInfo = () => {
+const AddInfo = ({allMeds}) => {
   const [selectedDate, setSelectedDate] = useState(null);
-  const pills = ["Adderall", "Percusets", "Pilly Willies"];
+  const [displayPill, setDisplayPill] = useState("");
 
   return (
     <div style={{width:"50%", minHeight: "50%"}} className='flex justify-center items-center'>
@@ -13,12 +13,12 @@ const AddInfo = () => {
                     <p className='text-xl'> Dosage Amount </p>
                     <Form.Control type="number"/>
 
-                    <p className='text-xl mt-3'> Medicine </p>
-                    <DropdownButton variant="light" title={"Choose Medicine"}>
-                        {pills.map((pill) => {
+                    <p className='text-xl mt-3'> Select Medicine </p>
+                    <DropdownButton variant="light" title={displayPill}>
+                        {allMeds.map((pill) => {
                             return(
-                                <Dropdown.Item>
-                                    {pill}
+                                <Dropdown.Item onClick={() => setDisplayPill(pill.name)}>
+                                    {pill.name}
                                 </Dropdown.Item>
                             )
                         })} 

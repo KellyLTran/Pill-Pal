@@ -4,9 +4,11 @@ import Graph from '../components/Graph'
 import { Button } from 'react-bootstrap';
 import user from '../lib/user'
 import AddInfo from '../components/AddInfo';
+import { axiosInstance } from '../lib/axios';
 
 export default function LandingPage() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [allMeds, setAllMeds] = useState([]);
 
   useEffect(() => {
     const currTime = new Date();
@@ -28,7 +30,15 @@ export default function LandingPage() {
     } else {
       setWelcomeMessage(messages[2]);
     }
-  }, []); // Empty dependency array ensures it runs once when the component mounts.
+
+    axiosInstance.get('/medication/').then(res => {
+      if(res.data && res.data.allMedications) {
+        setAllMeds(res.data.allMedications);
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  }, []); 
 
   return (
     <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col items-center justify-center pt-3 text-center text-white'>
@@ -37,7 +47,7 @@ export default function LandingPage() {
       </div>
 
       <div className="flex flex-row">
-        <AddInfo/>
+        <AddInfo allMeds={allMeds}/>
         <Graph/>
       </div>
       
