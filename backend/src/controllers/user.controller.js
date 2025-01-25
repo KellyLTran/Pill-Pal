@@ -50,7 +50,7 @@ export const deleteEntry = async (req, res) => {
 
 
 export const addEntry = async (req, res) => {
-  const { userID, entryID } = req.params;
+  const { userID, medicationID } = req.params;
   const { dateAdded, usedAt, medication } = req.body; 
 
   try {
