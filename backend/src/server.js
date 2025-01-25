@@ -1,6 +1,6 @@
 import express from 'express'
 import authRouter from './routes/auth.route.js';
-import medRouter from './routes/medication.route.js';
+import medicationRouter from './routes/medication.route.js';
 import userRouter from './routes/user.route.js'
 
 import dotenv from 'dotenv'
@@ -25,7 +25,7 @@ app.use(cors({
 
 // routes
 app.use('/api/auth', authRouter);
-app.use('/api/meds', medRouter);
+app.use('/api/medication', medicationRouter);
 app.use('/api/user', userRouter);
 
 app.listen(PORT, () => {
