@@ -1,26 +1,30 @@
 import Entry from '../models/entry.model.js'
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 // Get all entries
 export const getAllEntries = async (req, res) => {
-    const entries = await Entry.find({}).sort({createdAt: -1})
-}
+    const allEntries = await Entry.find({}).sort({createdAt: -1})
+
+    res.send(200).json({allEntries});
+};
+
 
 // Get a single entry
 export const getEntry = async (req, res) => {
-    const {id} = req.params
+    const {entryID} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(entryID)) {
         return res.status(404).json({error: 'No such entry'})
     }
 
-    const entry = await Entry.findById(id)
+    const entry = await Entry.findById(entryID)
 
     if (!entry) {
         return res.status(404).json({error: 'No such entry'})
     }
     res.status(200).json(entry)
 }
+
 
 // Create a new entry
 export const createEntry = async (req, res) => {
@@ -37,13 +41,13 @@ export const createEntry = async (req, res) => {
  
 // Delete an entry 
 export const deleteEntry = async(req, res) => {
-    const {id} = req.params
+    const {entryID} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(entryID)) {
         return res.status(404).json({error: 'No such entry'})
     }
 
-    const entry = await Entry.findOneAndDelete({_id: id})
+    const entry = await Entry.findOneAndDelete({_id: entryID})
 
     if (!entry) {
         return res.status(404).json({error: 'No such entry'})
