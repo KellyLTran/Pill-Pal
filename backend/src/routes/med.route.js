@@ -1,11 +1,10 @@
-const express = require('express')
-const {
-    createMed,
-    getMeds,
-    getMed,
-    deleteMed,
-    updateMed
-} = require('../controllers/MedController.js')
+import express from 'express'
+
+import { createMed,
+  getMeds,
+  getMed,
+  deleteMed,
+  updateMed } from '../controllers/med.controller.js'
 
 const router = express.Router()
 
@@ -24,4 +23,4 @@ router.delete('/:id', deleteMed)
 // UPDATE a med
 router.patch('/:id', updateMed)
 
-module.exports = router
+export default router;
