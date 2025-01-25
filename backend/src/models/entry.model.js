@@ -9,4 +9,4 @@ const entrySchema = new Schema({
 
 const Entry = mongoose.model('entry', entrySchema);
 
-module.export = Entry;
+export default Entry;
