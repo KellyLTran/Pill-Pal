@@ -7,7 +7,7 @@ function App() {
     <div className="flex flex-col">
       <Navbar/>
       <Routes/>
-    </div>  
+    </div>
   )
 }
 
