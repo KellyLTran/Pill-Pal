@@ -26,3 +26,10 @@ export const addEntry = async (req, res) => {
 
   res.status(100).json({message: "add entry route"})
 }
+
+export const getGraph = async (req, res) => {
+
+  const {userID} = req.params;
+  const {startDate, endDate, currentDate} = req.status;
+
+}

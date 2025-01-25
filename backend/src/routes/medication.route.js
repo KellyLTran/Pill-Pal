@@ -2,12 +2,12 @@ import express from 'express'
 
 import {getAllMedications, getMedication} from '../controllers/medication.controller.js'
 
-const medRouter = express.Router()
+const medicationRouter = express.Router()
 
 // GET all meds
-medRouter.get('/', getAllMedications);
+medicationRouter.get('/', getAllMedications);
 
 // GET a single med
-medRouter.get('/:medicationID', getMedication);
+medicationRouter.get('/:medicationID', getMedication);
 
-export default medRouter;
+export default medicationRouter;
