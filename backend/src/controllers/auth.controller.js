@@ -1,4 +1,4 @@
-import User from '../models/user.model'
+import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
@@ -49,7 +49,7 @@ export const signup = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-
+  // todo!!! add logout
 }
 
 export const check = (req, res) => {

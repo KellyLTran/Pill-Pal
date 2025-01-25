@@ -1,10 +1,12 @@
 import express from 'express'
-import authRouter from './routes/auth.route';
+import authRouter from './routes/auth.route.js';
+import medicationRouter from './routes/medication.route.js';
+import userRouter from './routes/user.route.js'
 
 import dotenv from 'dotenv'
 
-import { connectDB } from './lib/db'
-import { handleError } from './middleware/error';
+import connectDB  from './lib/db.js'
+import { handleError } from './middleware/error.js';
 
 import cors from 'cors'
 
@@ -21,7 +23,10 @@ app.use(cors({
   credentials: true
 }))
 
+// routes
 app.use('/api/auth', authRouter);
+app.use('/api/medication', medicationRouter);
+app.use('/api/user', userRouter);
 
 app.listen(PORT, () => {
   console.log("Began server on port ", PORT);
