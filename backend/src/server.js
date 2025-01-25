@@ -25,8 +25,8 @@ app.use(cors({
 
 // routes
 app.use('/api/auth', authRouter);
-app.use('/api/meds', medRouter)
-app.use('/api/user', )
+app.use('/api/meds', medRouter);
+app.use('/api/user', userRouter);
 
 app.listen(PORT, () => {
   console.log("Began server on port ", PORT);

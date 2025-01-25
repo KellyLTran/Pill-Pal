@@ -2,24 +2,24 @@ import Medication from '../models/medication.model.js'
 import mongoose from 'mongoose'
 
 // Get all medicines
-export const getAllMeds = async (req, res) => {
+export const getAllMedications = async (req, res) => {
   const allMedications = await Med.find({}).sort({createdAt: -1})
 
-  res.send("")
+  res.send(200).json({allMedications});
 }
 
 // Get a single medicine
-export const getMed = async (req, res) => {
-    const {medicineID} = req.params
+export const getMedication = async (req, res) => {
+    const {medicationID} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(medicineID)) {
+    if (!mongoose.Types.ObjectId.isValid(medicationID)) {
         return res.status(404).json({message: 'Invalid parameters!'})
     }
 
-    const medicine = await Med.findById(medicineID)
+    const medication = await Med.findById(medicationID)
 
-    if (!medicine) {
-        return res.status(404).json({message: 'No medicine exists.'})
+    if (!medication) {
+        return res.status(404).json({message: 'No medication exists.'})
     }
-    res.status(200).json(medicine)
+    res.status(200).json(medication)
 }
