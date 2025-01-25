@@ -2,12 +2,12 @@ import Medication from '../models/medication.model.js'
 import mongoose from 'mongoose'
 
 // Get all medicines
-const getMeds = async (req, res) => {
+export const getMeds = async (req, res) => {
     const medicines = await Med.find({}).sort({createdAt: -1})
 }
 
 // Get a single medicine
-const getMed = async (req, res) => {
+export const getMed = async (req, res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -23,7 +23,7 @@ const getMed = async (req, res) => {
 }
 
 // Create new medicine
-const createMed = async (req, res) => {
+export const createMed = async (req, res) => {
     const {name, dosage, release, sleep} = req.body
 
     // add doc to db
@@ -36,7 +36,7 @@ const createMed = async (req, res) => {
 }
  
 // Delete a medicine
-const deleteMed = async(req, res) => {
+export const deleteMed = async(req, res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -54,7 +54,7 @@ const deleteMed = async(req, res) => {
 
 
 // Update a medicine
-const updateMed = async(req, res) => {
+export const updateMed = async(req, res) => {
     const {id} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -71,5 +71,3 @@ const updateMed = async(req, res) => {
 
     res.status(200).json(medicine)
 }
-
-export default {updateMed, deleteMed, getMed, getMeds, createMed};
