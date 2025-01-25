@@ -2,6 +2,13 @@ import User from "../models/user.model.js";
 import Entry from "../models/entry.model.js";
 import mongoose from 'mongoose';
 
+export const getUser = async (req, res) => {
+  const {userID} = req.params;
+  res.status(200).json({
+    message: "get user route hit"
+  })
+}
+
 export const getHistory = async (req, res) => {
   const {userID} = req.params;
 
@@ -69,7 +76,7 @@ export const deleteEntry = async (req, res) => {
 
 
 export const addEntry = async (req, res) => {
-  const {userID} = req.params;
+  const {userID, medicationID} = req.params;
   const {dateAdded, usedAt, medication} = req.body; 
 
   if (!mongoose.Types.ObjectId.isValid(userID)) {
@@ -86,4 +93,15 @@ export const addEntry = async (req, res) => {
   await user.save();
 
   res.status(200).json(entry)
+}
+
+export const getGraph = async (req, res) => {
+
+  const {userID} = req.params;
+  const {startDate, endDate, currentDate} = req.status;
+
+  return req.status(200).json({
+    sleepDate:"",
+    graphData:""
+  });
 }

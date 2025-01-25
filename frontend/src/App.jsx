@@ -4,7 +4,7 @@ import Routes from "./routing"
 function App() {
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col">
       <Navbar/>
       <Routes/>
     </div>  

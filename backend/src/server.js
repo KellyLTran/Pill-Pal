@@ -1,4 +1,5 @@
 import express from 'express'
+
 import authRouter from './routes/auth.route.js';
 import medicationRouter from './routes/medication.route.js';
 import userRouter from './routes/user.route.js'
@@ -17,7 +18,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json());
-app.use(handleError);
+// app.use(handleError);
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
