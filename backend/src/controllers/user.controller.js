@@ -1,5 +1,12 @@
 import User from "../models/user.model.js";
 
+export const getUser = async (req, res) => {
+  const {userID} = req.params;
+  res.status(200).json({
+    message: "get user route hit"
+  })
+}
+
 export const getHistory = async (req, res) => {
   const {userID} = req.params;
 
@@ -32,4 +39,8 @@ export const getGraph = async (req, res) => {
   const {userID} = req.params;
   const {startDate, endDate, currentDate} = req.status;
 
+  return req.status(200).json({
+    sleepDate:"",
+    graphData:""
+  });
 }
