@@ -3,50 +3,98 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const login = async (req, res) => {
+  const { email, password } = req.body;
 
-  const {email, password} = req.body;
+  // Validate input fields
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Please provide both email and password.' });
+  }
 
-  const user = await User.findOne({email});
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
 
-  if (!user) return res.status(404).json({message:'User not found.'});
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
 
-  const isPassword = await bcrypt.compare(password, user.password);
-  if (!isPassword) return res.status(401).json({message: 'Invalid credentials'});
+    // Generate a JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN || '1h', // Default to 1 hour if not set
+    });
 
-  const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
-  })
+    // Return the token and user data (excluding sensitive fields)
+    const userResponse = {
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      entryHistory: user.entryHistory,
+    };
 
-  res.status(200).json({token, user});
-
-}
+    res.status(200).json({ token, user: userResponse });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error during login.' });
+  }
+};
 
 export const signup = async (req, res) => {
-  const {email, name, password} = req.body;
+  const { email, name, password } = req.body;
 
-  if (!email || !name || !password) return res.status(400).json({message:"Invalid signup parameters."});
-  
+  // Validate input fields
+  if (!email || !name || !password) {
+    return res.status(400).json({ message: "Please provide all required fields: email, name, password." });
+  }
 
-  if (password.length < 7) return res.status(401).json({message:"Password is too short."});
+  // Validate password length
+  if (password.length < 7) {
+    return res.status(400).json({ message: "Password must be at least 7 characters long." });
+  }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  try {
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists." });
+    }
 
-  const newUser = new User({
-    email, 
-    password: hashedPassword,
-    name
-  })
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the salt rounds
 
-  await newUser.save();
+    // Create a new user
+    const newUser = new User({
+      email,
+      name,
+      password: hashedPassword,
+    });
 
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  });
+    // Save the user to the database
+    await newUser.save();
 
-  return res.status(201).json({token, user:newUser})
+    // Generate a JWT token
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN || '1h', // Default to 1 hour if not set
+    });
 
-}
+    // Return the token and user data (excluding sensitive fields)
+    const userResponse = {
+      _id: newUser._id,
+      email: newUser.email,
+      name: newUser.name,
+      entryHistory: newUser.entryHistory,
+    };
+
+    res.status(201).json({ token, user: userResponse });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error during signup." });
+  }
+};
 
 export const logout = (req, res) => {
   // todo!!! add logout
