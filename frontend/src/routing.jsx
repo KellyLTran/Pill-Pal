@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import HomePage from './pages/HomePage';
+import History from './pages/History';
 
 import { useAuthStore } from './hooks/authStore';
 
@@ -21,6 +22,7 @@ const Routes = () => {
       <Route path="/login" element={!authUser? <LoginPage/> : <Navigate to="/homepage"/>}/>
       <Route path="/signup" element={!authUser? <SignupPage/> : <Navigate to="/homepage"/>}/>
       <Route path="/homepage" element={authUser? <HomePage/> : <Navigate to="/login"/>}/>
+      <Route path="/history" element={<History/>}/>
     </BrowserRoutes>
   )
 } 

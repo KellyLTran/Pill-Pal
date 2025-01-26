@@ -18,7 +18,7 @@ const useSchema = new mongoose.Schema({
   
   entryHistory: [{
     type: mongoose.Types.ObjectId,
-    ref: 'Entry'
+    ref: 'entry'
   }]
 })
 
