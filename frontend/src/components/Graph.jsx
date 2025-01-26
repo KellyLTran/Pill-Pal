@@ -1,37 +1,54 @@
-import React from 'react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine, Brush, ResponsiveContainer } from 'recharts';
+import { format } from 'date-fns';
 
-
-const Graph = () => {
-    
-  const data = Array.from({length: 50}, (_, i) => ({
-    name: `Day ${i+1}`, 
-    value: Math.random() * 1000
-  }));
+const Graph = ({ graphData, sleepDate }) => {
+  const formatXAxis = (tickItem) => {
+    try {
+      const date = new Date(tickItem);
+      return format(date, 'MM/dd/yyyy hh:mm a');
+    } catch (error) {
+      console.error('Invalid date:', tickItem, 'Error:', error);
+      return tickItem; // Return the original tickItem if it's invalid
+    }
+  };
 
   return (
-    <div style={{ 
-      width: '500px', 
-      height: '400px', 
-      overflow: 'auto'
-    }}>
-      <ResponsiveContainer width={data.length * 80} height={350}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          <ReferenceLine 
-            x="Day 25"  // Specify the exact point
-            stroke="yellow" 
-            strokeDasharray="3 3"  // Makes it dotted
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  )
-}
+    <div className="flex-3 p-4 w-3/4 overflow-x-auto bg-gray-50 rounded-lg shadow-md">
+      <div className="">
+        <ResponsiveContainer width="100%" height={500}>
+          <BarChart
+            data={graphData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" tickFormatter={formatXAxis} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Brush dataKey="date" height={30} stroke="#8884d8" travellerWidth={30} />
+            <Bar dataKey="intensity" fill="#8884d8" />
+            {sleepDate && (
+              <ReferenceLine
+                x={new Date(sleepDate).toLocaleString()}
+                stroke="red"
+                label={{ value: 'Sleep Time', position: 'top' }}
+              />
+            )}
 
-export default Graph
+            {/* Reference line for sleep time */}
+            {sleepDate && (
+              <ReferenceLine
+                x={sleepDate.getTime()} // Sleep time as a timestamp
+                stroke="red"
+                label={{ value: 'Sleep Time', position: 'top' }}
+              />
+            )}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
+
+export default Graph;

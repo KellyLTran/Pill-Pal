@@ -1,66 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Graph from '../components/Graph'
-import { Button } from 'react-bootstrap';
-import user from '../lib/user'
-import AddInfo from '../components/AddInfo';
-import { axiosInstance } from '../lib/axios';
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function LandingPage() {
-  const [welcomeMessage, setWelcomeMessage] = useState("");
-  const [allMeds, setAllMeds] = useState([]); //list of all meds
-  const [selectedMed, setSelectedMed] = useState(""); //ID of the pill selected
-
-  useEffect(() => {
-    const currTime = new Date();
-    const morningTime = new Date();
-    morningTime.setHours(0, 0, 0, 0); 
-  
-    const afternoonTime = new Date();
-    afternoonTime.setHours(12, 0, 0, 0); 
-  
-    const eveningTime = new Date();
-    eveningTime.setHours(17, 30, 0, 0); 
-  
-    const messages = ["Good Morning, ", "Good Afternoon, ", "Good Evening, "];
-  
-    if (currTime >= morningTime && currTime < afternoonTime) {
-      setWelcomeMessage(messages[0]);
-    } else if (currTime >= afternoonTime && currTime < eveningTime) {
-      setWelcomeMessage(messages[1]);
-    } else {
-      setWelcomeMessage(messages[2]);
-    }
-
-    axiosInstance.get('/medication/').then(res => {
-      if(res.data && res.data.allMedications) {
-        setAllMeds(res.data.allMedications);
-      }
-    }).catch(err => {
-      console.log(err);
-    })
-  }, []); 
-
-
-
-  
   return (
-    <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col items-center justify-center pt-3 text-center text-white'>
-      <div>
-        <h1 className='mb-3 text-3xl'>{welcomeMessage} NAME GOES HERE</h1>
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-md w-full mx-4">
+        <h1 className="mb-6 text-4xl font-bold text-gray-800">
+          Welcome to <span className="text-blue-600">Pill Pal</span>
+        </h1>
+
+        <p className="mb-8 text-gray-600">
+          The solution to ADHD and planning.
+        </p>
+
+        <div className="flex flex-col space-y-4">
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 transform hover:scale-105 active:scale-95"
+          >
+            Login
+          </Link>
+          <Link
+            to="/signup"
+            className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition duration-300 transform hover:scale-105 active:scale-95"
+          >
+            Signup
+          </Link>
+        </div>
       </div>
 
-      <div className="flex flex-row">
-        <AddInfo allMeds={allMeds} setSelectedMed={setSelectedMed}/>
-        <Graph/>
-      </div>
-      
-
-      {/* <Button 
-      style={{backgroundColor: "white", color: "black", border: "none"}} 
-      disabled={selectedMed == ""}
-      onClick={() => {axiosInstance.post(`/entry/notARealUser/${selectedMed}/`)}}> Record Entry</Button> */}
-
+      <footer className="mt-8 text-gray-500 text-sm">
+        <p>© 2023 Your Company. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
