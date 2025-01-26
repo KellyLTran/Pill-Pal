@@ -9,7 +9,7 @@ const useUserStore = create((set) => ({
   // Method to handle login
   login: async (email, password) => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -32,7 +32,7 @@ const useUserStore = create((set) => ({
   // Method to handle signup
   signup: async (email, name, password) => {
     try {
-      const response = await fetch('/api/auth/signup', {
+      const response = await fetch('/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name, password }),

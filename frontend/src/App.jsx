@@ -22,11 +22,11 @@ function App() {
         // Check if the app is in development mode
         if (import.meta.env.VITE_DEV_MODE === 'true') {
           // Ensure the test user exists in the database
-          const signupResponse = await axiosInstance.post('/api/auth/signup', testUser);
+          const signupResponse = await axiosInstance.post('/auth/signup', testUser);
           console.log('Test user created:', signupResponse.data);
 
           // Log in the test user
-          const loginResponse = await axiosInstance.post('api/auth/login', {
+          const loginResponse = await axiosInstance.post('/auth/login', {
             email: testUser.email,
             password: testUser.password,
           });
@@ -51,7 +51,9 @@ function App() {
   return (
     <div className="flex flex-col">
       <Navbar />
-      <Routes/>
+      <div className='pt-20'> 
+        <Routes/>
+      </div>
     </div>
   )
 }

@@ -31,7 +31,7 @@ export default function SignupPage() {
     }
     console.log('Signup Form Submitted:', signupForm);
     signup(signupForm)
-    navigate("/homepage")
+    navigate("/home")
   };
 
   return (

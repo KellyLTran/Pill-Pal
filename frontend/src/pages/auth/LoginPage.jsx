@@ -25,12 +25,12 @@ export default function LoginPage() {
     e.preventDefault();
     console.log('Login Form Submitted:', loginForm);
     login(loginForm);
-    navigate('/homepage');
+    navigate('/home');
 
   };
 
   return (
-    <div style={{fontFamily: 'Montserrat', fontWeight: 'bold', backgroundColor: "#ff6b6b", height: "100vh"}} className='flex flex-col justify-center items-center min-h-screen bg-gray-100'>
+    <div className="font-montserrat font-bold bg-[#ff6b6b] h-screen flex flex-col justify-center items-center">
       <div className='bg-white p-8 rounded-lg shadow-md w-full max-w-md'>
         <h1 className='text-3xl font-bold mb-6 text-gray-800'>Login Here</h1>
         <form onSubmit={handleSubmit} className='space-y-6'>

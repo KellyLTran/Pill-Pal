@@ -13,7 +13,7 @@ const Routes = () => {
   const { isAuthenticated, user } = useUserStore();
 
   return (
-    <div className='mt-30'>
+    <div>
       <BrowserRoutes>
         <Route path="/" element={<LandingPage />} />
         <Route
