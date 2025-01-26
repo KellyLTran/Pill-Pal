@@ -1,4 +1,3 @@
-import React from 'react';
 import { Route, Routes as BrowserRoutes, Navigate } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
@@ -10,7 +9,7 @@ import History from './pages/History';
 import useUserStore from './hooks/userStore';
 
 const Routes = () => {
-  const { isAuthenticated, user } = useUserStore();
+  const { isAuthenticated } = useUserStore();
 
   return (
     <div>

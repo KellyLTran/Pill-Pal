@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useUserStore from '../../hooks/userStore';
+import { axiosInstance } from '../../lib/axios';
+
+const testUser = {
+  email: 'guysmail@email.com',
+  name: 'Test User',
+  password: 'password',
+};
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -10,7 +17,28 @@ export default function LoginPage() {
   });
   const [error, setError] = useState(''); // State to handle login errors
 
-  const { login } = useUserStore();
+  const { login, isAuthenticated } = useUserStore();
+
+  // Automatically log in the test user in development mode
+  useEffect(() => {
+    const autoLoginTestUser = async () => {
+      try {
+        // Check if the app is in development mode
+        if (import.meta.env.VITE_DEV_MODE === 'true') {
+
+          // Update the Zustand store with the logged-in user
+          login(testUser.email, testUser.password);
+
+          // Redirect to the home page
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('Error during automatic login:', error);
+      }
+    };
+
+    autoLoginTestUser();
+  }, [login, navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

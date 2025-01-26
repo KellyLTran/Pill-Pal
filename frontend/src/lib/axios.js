@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
+const SERVER_PORT = import.meta.env.VITE_SERVER_PORT || 3001
 
 //CHANGE THIS BACK TO SERVER_PORT ONCE YOU GET IT WORKING
 

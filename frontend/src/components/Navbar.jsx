@@ -43,23 +43,7 @@ export default function Navbar() {
                 <FaSignOutAlt className="mr-2" /> Logout
               </button>
             </>
-          ) : (
-            <>
-              {/* Login and Signup Links (only shown when not logged in) */}
-              <Link
-                to="/login"
-                className="text-black hover:text-blue-600 px-4 py-2 rounded transition duration-300"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="text-black hover:text-blue-600 px-4 py-2 rounded transition duration-300"
-              >
-                Signup
-              </Link>
-            </>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
