@@ -20,7 +20,7 @@ Pill Pal uses historical healthcare data and trends on ADHD medication effective
 
 ---
 
-## 🚨 The Problem
+## The Problem
 Managing ADHD medications presents significant challenges:
 - Forgetting to take medications disrupts productivity and effectiveness.
 - Lack of insight into peak effectiveness hours impacts daily planning.
@@ -28,7 +28,7 @@ Managing ADHD medications presents significant challenges:
 
 ---
 
-## 💡 The Solution
+## The Solution
 **Pill Pal** provides a data-driven solution that visualizes medication effectiveness, helping users:
 - Identify peak productive hours.
 - Plan optimal times for doses.
