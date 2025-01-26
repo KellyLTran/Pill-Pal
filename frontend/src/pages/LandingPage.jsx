@@ -7,6 +7,8 @@ import AddInfo from '../components/AddInfo';
 import { axiosInstance } from '../lib/axios';
 
 export default function LandingPage() {
+  const testUserID = "679577a1e24a10f56b7ee79e"; //john doe
+
   const [welcomeMessage, setWelcomeMessage] = useState("");
   const [allMeds, setAllMeds] = useState([]); //list of all meds
   const [selectedMed, setSelectedMed] = useState(""); //ID of the pill selected
@@ -56,10 +58,14 @@ export default function LandingPage() {
       </div>
       
 
-      {/* <Button 
+      { <Button 
       style={{backgroundColor: "white", color: "black", border: "none"}} 
       disabled={selectedMed == ""}
-      onClick={() => {axiosInstance.post(`/entry/notARealUser/${selectedMed}/`)}}> Record Entry</Button> */}
+      onClick={() => {
+        axiosInstance.post(`/entry/${testUserID}/${selectedMed}/`, {
+          usedAt: new Date().toISOString()
+        });
+      }}> Record Entry</Button> }
 
     </div>
   );
