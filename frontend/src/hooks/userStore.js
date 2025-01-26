@@ -94,8 +94,8 @@ const useUserStore = create((set, get) => ({
     localStorage.removeItem('isAuthenticated');
   },
 
-  // Method to check authentication status (e.g., on page reload)
-  checkAuth: async () => {
+  // Method to refresh user data from the backend
+  refreshUser: async () => {
     set({ isLoading: true, error: null });
     try {
       const token = get().token;

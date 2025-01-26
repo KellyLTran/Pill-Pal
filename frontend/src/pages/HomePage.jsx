@@ -8,7 +8,7 @@ import { axiosInstance } from '../lib/axios';
 
 const HomePage = () => {
   const { fetchAllMeds, recordEntry } = useMedicationStore();
-  const { isAuthenticated, user } = useUserStore();
+  const { isAuthenticated, user, refreshUser } = useUserStore();
   const [graphData, setGraphData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [sleepDate, setSleepDate] = useState(null);
@@ -47,7 +47,7 @@ const HomePage = () => {
     }
   };
 
-  // Fetch all medications when the user is authenticated
+  // Fetch all medications and graph data when the user is authenticated
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllMeds();
@@ -55,10 +55,12 @@ const HomePage = () => {
     }
   }, [isAuthenticated, fetchAllMeds, user]);
 
+  // Handle modal close and refetch graph data if needed
   const handleModalClose = async (shouldRefetch = false) => {
     setIsModalVisible(false);
     if (shouldRefetch) {
-      await fetchGraphData(); // Refetch the graph data when the modal is closed after saving a new entry
+      await refreshUser(); // Refresh user data
+      await fetchGraphData(); // Refetch the graph data
     }
   };
 
