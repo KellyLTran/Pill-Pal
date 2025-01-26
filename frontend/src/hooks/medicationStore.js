@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios';
+import useUserStore from './userStore'; // Import user store to access user ID
 
-const useMedicationStore = create((set) => ({
+const useMedicationStore = create((set, get) => ({
   allMeds: [], // List of all medications
   selectedMed: '', // ID of the selected medication
+  selectedTime: '', // Selected time for the entry
 
   // Fetch all medications
   fetchAllMeds: async () => {
@@ -20,13 +22,18 @@ const useMedicationStore = create((set) => ({
   // Set the selected medication
   setSelectedMed: (medId) => set({ selectedMed: medId }),
 
+  // Set the selected time
+  setSelectedTime: (time) => set({ selectedTime: time }),
+
   // Record an entry for the selected medication
-  recordEntry: async (userId) => {
-    const { selectedMed } = useMedicationStore.getState();
-    if (!userId || !selectedMed) return;
+  recordEntry: async () => {
+    const { selectedMed, selectedTime } = get();
+    const { user } = useUserStore.getState(); // Get user ID from user store
+
+    if (!user || !selectedMed || !selectedTime) return;
 
     try {
-      await axiosInstance.post(`/entry/${userId}/${selectedMed}/`, {
+      await axiosInstance.post(`/entry/${user._id}/${selectedMed}/`, {
         usedAt: new Date().toISOString(),
       });
       alert('Entry recorded successfully!');

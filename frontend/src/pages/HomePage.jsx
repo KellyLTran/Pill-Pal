@@ -1,91 +1,90 @@
-import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
-import Graph from "../components/Graph";
-import AddInfo from "../components/AddInfo";
-import useUserStore from "../hooks/userStore";
-import useMedicationStore from "../hooks/medicationStore";
+import React, { useEffect, useState } from 'react';
+import useMedicationStore from '../hooks/medicationStore';
+import useUserStore from '../hooks/userStore';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Button } from 'react-bootstrap';
+import AddEntryModal from '../components/addEntryModal'; // Import the new modal component
 
-export default function HomePage() {
-  const [welcomeMessage, setWelcomeMessage] = useState("");
-  const [loading, setLoading] = useState(true); // Add loading state
+// Sample data for medication activation
+const createSampleConcentrationMap = () => {
+  const concentrationMap = new Map();
+  const startTime = new Date(); // Start from the current time
 
-  // Get user data from Zustand store
-  const { user, isAuthenticated } = useUserStore();
-  const { allMeds, selectedMed, fetchAllMeds, setSelectedMed, recordEntry } = useMedicationStore();
-
-  // Function to determine the welcome message based on the time of day
-  const getWelcomeMessage = () => {
-    const currTime = new Date();
-    const hour = currTime.getHours();
-
-    if (hour >= 0 && hour < 12) {
-      return "Good Morning, ";
-    } else if (hour >= 12 && hour < 17) {
-      return "Good Afternoon, ";
-    } else {
-      return "Good Evening, ";
-    }
-  };
-
-  // Fetch medications and set welcome message on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setWelcomeMessage(getWelcomeMessage());
-        await fetchAllMeds();
-      } catch (error) {
-        console.error("Error fetching medications:", error);
-      } finally {
-        setLoading(false); // Set loading to false after fetching data
-      }
-    };
-
-    fetchData();
-  }, [fetchAllMeds]);
-
-  // Show loading state while fetching data
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-[#ff6b6b] text-white">
-        <p>Loading...</p>
-      </div>
-    );
+  // Simulate concentration over 24 hours
+  for (let i = 0; i < 24; i++) {
+    const time = new Date(startTime.getTime() + i * 60 * 60 * 1000); // Add hours
+    const concentration = Math.sin((i / 24) * Math.PI); // Simulate a sine wave for concentration
+    concentrationMap.set(time.toISOString(), Math.abs(concentration)); // Ensure value is between 0 and 1
   }
 
+  return concentrationMap;
+};
+
+const sampleConcentrationMap = createSampleConcentrationMap();
+
+const HomePage = () => {
+  const { fetchAllMeds } = useMedicationStore();
+  const { isAuthenticated } = useUserStore();
+  const [graphData, setGraphData] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false); // Manage modal visibility in HomePage
+
+  // Fetch all medications when the user is authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchAllMeds();
+    }
+  }, [isAuthenticated, fetchAllMeds]);
+
+  // Update graph data based on the sample concentration map
+  useEffect(() => {
+    const data = Array.from(sampleConcentrationMap.entries()).map(([time, concentration]) => ({
+      date: new Date(time).toLocaleTimeString(), // Format time for display
+      concentration: concentration,
+    })); 
+
+    // const data = 
+    setGraphData(data);
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#ff6b6b] text-white font-montserrat font-bold">
-      {/* Welcome Message */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl">
-          {welcomeMessage} {user ? user.name : "Guest"}
-        </h1>
-      </div>
+    <div className="p-5 max-w-7xl mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Concentration Over Time</h1>
 
-      {/* Main Content */}
-      <div className="flex flex-col md:flex-row gap-8 w-full max-w-4xl px-4">
-        {/* AddInfo Component */}
-        <div className="flex-1">
-          <AddInfo allMeds={allMeds} setSelectedMed={setSelectedMed} />
-        </div>
-
-        {/* Graph Component */}
-        <div className="flex-1">
-          <Graph />
-        </div>
-      </div>
-
-      {/* Record Entry Button (only for authenticated users) */}
-      {isAuthenticated && (
-        <div className="mt-8">
-          <Button
-            className="bg-white text-black border-none hover:bg-gray-100 transition-colors"
-            disabled={!selectedMed}
-            onClick={() => recordEntry(user.id)} // Pass the user ID to recordEntry
+      {/* Large Scrollable Graph */}
+      <div className="w-full overflow-x-auto bg-gray-50 rounded-lg shadow-md p-6 mb-8">
+        <div className="min-w-[1500px] h-[500px]">
+          <BarChart
+            width={1500} // Increased width for a larger graph
+            height={500} // Increased height for a larger graph
+            data={graphData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
-            Record Entry
-          </Button>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="concentration" fill="#8884d8" />
+          </BarChart>
         </div>
-      )}
+      </div>
+
+      {/* Button to Open Modal */}
+      <Button
+        variant="primary"
+        onClick={() => setIsModalVisible(true)} // Open modal
+        className="block mx-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        Add Entry
+      </Button>
+
+      {/* Add Entry Modal */}
+      <AddEntryModal
+        isModalVisible={isModalVisible} // Pass modal visibility as prop
+        setIsModalVisible={setIsModalVisible} // Pass setter function as prop
+      />
     </div>
   );
-}
+};
+
+export default HomePage;

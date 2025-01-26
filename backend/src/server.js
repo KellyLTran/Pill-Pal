@@ -19,6 +19,7 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json());
+
 // app.use(handleError);
 app.use(cors({
   origin: "http://localhost:5173",

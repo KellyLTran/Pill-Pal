@@ -1,14 +1,4 @@
-import React, { useEffect } from 'react';
-import { axiosInstance } from './lib/axios';
 import Routes from './routing';
-
-import useUserStore  from './hooks/userStore';
-
-const testUser = {
-  email: 'test@example.com',
-  name: 'Test User',
-  password: 'password123',
-};
 
 import Navbar from './components/Navbar'
 

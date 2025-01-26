@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Import useLocation
 import useUserStore from '../hooks/userStore'; // Correct import path
 import { FaHome, FaHistory, FaSignOutAlt } from 'react-icons/fa'; // Import icons from react-icons
 
 export default function Navbar() {
-  const { authUser, logout } = useUserStore();
+  const { user, logout } = useUserStore();
+  const location = useLocation(); // Get the current location
 
   return (
     <div className="font-montserrat fixed top-0 w-full shadow-lg bg-white">
@@ -17,12 +18,16 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div className="flex flex-row items-center space-x-4">
-          {authUser ? (
+          {user ? (
             <>
               {/* Home Link with Icon */}
               <Link
                 to="/home"
-                className="text-black hover:text-blue-600 px-4 py-2 rounded transition duration-300 flex items-center"
+                className={`flex items-center px-4 py-2 rounded transition duration-300 ${
+                  location.pathname === '/home'
+                    ? 'text-blue-600 font-bold' // Bold and blue if active
+                    : 'text-black hover:text-blue-600' // Default styling
+                }`}
               >
                 <FaHome className="mr-2" /> Home
               </Link>
@@ -30,7 +35,11 @@ export default function Navbar() {
               {/* History Link with Icon */}
               <Link
                 to="/history"
-                className="text-black hover:text-blue-600 px-4 py-2 rounded transition duration-300 flex items-center"
+                className={`flex items-center px-4 py-2 rounded transition duration-300 ${
+                  location.pathname === '/history'
+                    ? 'text-blue-600 font-bold' // Bold and blue if active
+                    : 'text-black hover:text-blue-600' // Default styling
+                }`}
               >
                 <FaHistory className="mr-2" /> History
               </Link>

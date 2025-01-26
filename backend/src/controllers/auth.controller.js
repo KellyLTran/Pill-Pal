@@ -3,6 +3,9 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const login = async (req, res) => {
+  
+  console.log("got a login request!: ", req.body)
+  
   const { email, password } = req.body;
 
   // Validate input fields
@@ -51,7 +54,13 @@ export const signup = async (req, res) => {
     return res.status(400).json({ message: "Please provide all required fields: email, name, password." });
   }
 
-  // Validate password length
+  // Validate email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format." });
+  }
+
+  // Validate password length and complexity
   if (password.length < 7) {
     return res.status(400).json({ message: "Password must be at least 7 characters long." });
   }
@@ -92,13 +101,13 @@ export const signup = async (req, res) => {
     res.status(201).json({ token, user: userResponse });
   } catch (error) {
     console.error(error);
+    if (error.code === 11000) {
+      // MongoDB duplicate key error (email already exists)
+      return res.status(400).json({ message: "Email already exists." });
+    }
     res.status(500).json({ message: "Server error during signup." });
   }
 };
-
-export const logout = (req, res) => {
-  // todo!!! add logout
-}
 
 export const check = (req, res) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
