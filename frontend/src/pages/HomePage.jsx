@@ -4,7 +4,7 @@ import useUserStore from '../hooks/userStore';
 import { Button } from 'react-bootstrap';
 import AddEntryModal from '../components/addEntryModal';
 import { format } from 'date-fns';
-import Graph from '../components/Graph'; // Import your Graph component
+import Graph from '../components/Graph';
 
 const HomePage = () => {
   const { fetchAllMeds } = useMedicationStore();
@@ -17,21 +17,32 @@ const HomePage = () => {
     fetchGraphData,
   } = useUserStore();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(false); // State to trigger re-fetch
 
-  // Fetch all medications and graph data when the user is authenticated
+
+  // Fetch all medications and graph data when the user is authenticated or refreshTrigger changes
   useEffect(() => {
     if (isAuthenticated && user) {
       fetchAllMeds();
       fetchGraphData();
     }
-  }, [isAuthenticated, user, fetchAllMeds, fetchGraphData]);
+  }, [isAuthenticated, user, fetchAllMeds]);
 
-  const handleModalClose = async (shouldRefetch = false) => {
-    setIsModalVisible(false);
-    if (shouldRefetch) {
-      await refreshUser();
-      await fetchGraphData();
+  // Fetch all medications and graph data when the user is authenticated or refreshTrigger changes
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      fetchAllMeds();
+      fetchGraphData();
     }
+  }, [isAuthenticated, user, fetchAllMeds, fetchGraphData, refreshTrigger]);
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleModalSubmit = async () => {
+    setIsModalVisible(false);
+    setRefreshTrigger((prev) => !prev); // Toggle refreshTrigger to trigger re-fetch
   };
 
   return (
@@ -66,13 +77,13 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Use the Graph component and pass props */}
         <Graph graphData={graphData} sleepDate={sleepDate} />
       </div>
 
       <AddEntryModal
         isModalVisible={isModalVisible}
-        setIsModalVisible={handleModalClose}
+        onClose={handleModalClose}
+        onSubmit={handleModalSubmit} // Pass the callback function
       />
     </div>
   );

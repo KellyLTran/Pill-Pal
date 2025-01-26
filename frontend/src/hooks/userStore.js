@@ -28,7 +28,8 @@ const useUserStore = create((set, get) => ({
   isLoading: false, // Loading state for async operations
   error: null, // Error state for async operations
   graphData: [], // Graph data state
-  sleepDate: null, // Sleep date state
+  sleepDate: null, // Sleep date state, 
+  userEntries: [],
 
   // Method to handle login
   login: async (email, password) => {
@@ -167,6 +168,31 @@ const useUserStore = create((set, get) => ({
       set({ error: error.message, isLoading: false });
     }
   },
+
+  deleteUserEntry: async (userId, entryId) => {
+    try {
+      await axiosInstance.delete(`/entry/${userId}/${entryId}`);
+      set((state) => ({
+        userEntries: state.userEntries.filter((entry) => entry._id !== entryId),
+      }));
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+    }
+  },
+  fetchUserEntries: async (userId) => {
+    try {
+      const response = await axiosInstance.get(`/user/${userId}/history`);
+      if (response.data && response.data.entryHistory) {
+        const sortedEntries = response.data.entryHistory.sort(
+          (a, b) => new Date(b.usedAt) - new Date(a.usedAt)
+        );
+        set({ userEntries: sortedEntries });
+      }
+    } catch (error) {
+      console.error('Error fetching user entries:', error);
+    }
+  },
+
 }));
 
 export default useUserStore;

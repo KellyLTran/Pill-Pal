@@ -1,55 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { axiosInstance } from '../lib/axios';
 import useUserStore from '../hooks/userStore';
 
 const History = () => {
-  const { user } = useUserStore();
-  const [userEntries, setUserEntries] = useState([]);
-  const [pillMapping, setPillMapping] = useState({});
+  const { user, userEntries, fetchUserEntries, deleteUserEntry } = useUserStore();
 
   // Fetch user entries and medication mapping
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch user entries
-        const entriesResponse = await axiosInstance.get(`/user/${user._id}/history`);
-        if (entriesResponse.data && entriesResponse.data.entryHistory) {
-          const sortedEntries = entriesResponse.data.entryHistory.sort(
-            (a, b) => new Date(b.usedAt) - new Date(a.usedAt)
-          );
-          setUserEntries(sortedEntries);
-        }
-
-        // Fetch medication mapping
-        const medsResponse = await axiosInstance.get('/medication/');
-        if (medsResponse.data && medsResponse.data.allMedications) {
-          const mapping = medsResponse.data.allMedications.reduce((acc, med) => {
-            acc[med._id] = med.name;
-            return acc;
-          }, {});
-          setPillMapping(mapping);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     if (user) {
-      fetchData();
+      fetchUserEntries(user._id);
     }
-  }, [user]);
+  }, [user, fetchUserEntries]);
 
   // Handle entry deletion
   const handleDeleteEntry = async (entryID) => {
     if (window.confirm('Are you sure you want to delete this entry?')) {
-      try {
-        await axiosInstance.delete(`/entry/${user._id}/${entryID}`);
-        // Remove the deleted entry from the local state
-        setUserEntries((prevEntries) => prevEntries.filter((entry) => entry._id !== entryID));
-      } catch (error) {
-        console.error('Error deleting entry:', error);
-      }
+      await deleteUserEntry(user._id, entryID);
     }
   };
 
@@ -83,7 +49,7 @@ const History = () => {
               className="flex flex-row m-2 rounded pl-2"
             >
               <div>{new Date(entry.usedAt).toLocaleDateString()}</div>
-              <div>{pillMapping[entry.medication] || 'Unknown Medication'}</div>
+              <div>{entry.medication.name || 'Unknown Medication'}</div>
               <Button
                 style={{ width: '15%' }}
                 variant="danger"
