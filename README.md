@@ -3,8 +3,8 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [The Problem](#🚨-the-problem)
-3. [The Solution](#💡-the-solution)
+2. [The Problem](#the-problem)
+3. [The Solution](#the-solution)
 4. [Installation](#installation)
     - [Backend](#backend)
     - [Frontend](#frontend)
