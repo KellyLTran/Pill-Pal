@@ -1,12 +1,9 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import {useAuthStore} from '../hooks/authStore'
-
+import useUserStore from '../hooks/userStore'; // Correct import path
 
 export default function Navbar() {
 
-  const {authUser, logout} = useAuthStore();
-
+  const {authUser, logout} = useUserStore();
 
   return (
     <div style={{fontFamily: 'Montserrat', position: "fixed", top: 0}} className='w-full shadow-lg mb-0 mt-0 bg-transparent'>

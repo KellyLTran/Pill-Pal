@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
-import { useAuthStore } from '../../hooks/authStore';
+import useUserStore  from '../../hooks/userStore';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -11,7 +11,7 @@ export default function LoginPage() {
     password: '',
   });
 
-  const {login} = useAuthStore();
+  const {login} = useUserStore();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
