@@ -20,6 +20,11 @@ export default function Navbar() {
         <div className="flex flex-row items-center space-x-4">
           {user ? (
             <>
+              {/* Greeting Message */}
+              <span className="text-gray-800 font-semibold">
+                Hello, {user.name}!
+              </span>
+
               {/* Home Link with Icon */}
               <Link
                 to="/home"

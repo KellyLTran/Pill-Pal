@@ -1,61 +1,83 @@
 import React, { useEffect, useState } from 'react';
 import useMedicationStore from '../hooks/medicationStore';
 import useUserStore from '../hooks/userStore';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Button } from 'react-bootstrap';
-import AddEntryModal from '../components/addEntryModal'; // Import the new modal component
-
-// Sample data for medication activation
-const createSampleConcentrationMap = () => {
-  const concentrationMap = new Map();
-  const startTime = new Date(); // Start from the current time
-
-  // Simulate concentration over 24 hours
-  for (let i = 0; i < 24; i++) {
-    const time = new Date(startTime.getTime() + i * 60 * 60 * 1000); // Add hours
-    const concentration = Math.sin((i / 24) * Math.PI); // Simulate a sine wave for concentration
-    concentrationMap.set(time.toISOString(), Math.abs(concentration)); // Ensure value is between 0 and 1
-  }
-
-  return concentrationMap;
-};
-
-const sampleConcentrationMap = createSampleConcentrationMap();
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine } from 'recharts';
+import { Button } from 'react-bootstrap';  // Replace this with the actual button component library you're using
+import AddEntryModal from '../components/addEntryModal';
+import { axiosInstance } from '../lib/axios';
 
 const HomePage = () => {
-  const { fetchAllMeds } = useMedicationStore();
-  const { isAuthenticated } = useUserStore();
+  const { fetchAllMeds, recordEntry } = useMedicationStore();
+  const { isAuthenticated, user } = useUserStore();
   const [graphData, setGraphData] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false); // Manage modal visibility in HomePage
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [sleepDate, setSleepDate] = useState(null);
+
+  // Fetch graph data from the backend
+  const fetchGraphData = async () => {
+    if (!user) return;
+
+    const now = new Date();
+    const startDate = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
+    const endDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days from now
+
+    try {
+      const response = await axiosInstance.get(`/user/${user._id}/graph`, {
+        params: {
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          currentDate: now.toISOString(),
+        }
+      });
+
+      const { graphData, sleepDate } = response.data;
+
+      // Format the graph data for Recharts
+      const formattedData = graphData.map((entry) => ({
+        date: new Date(entry.date).toLocaleTimeString(),
+        intensity: entry.intensity,
+      }));
+
+      setGraphData(formattedData);
+      if (sleepDate) {
+        setSleepDate(new Date(sleepDate));
+      }
+    } catch (error) {
+      console.error('Error fetching graph data:', error);
+    }
+  };
 
   // Fetch all medications when the user is authenticated
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllMeds();
+      fetchGraphData();
     }
-  }, [isAuthenticated, fetchAllMeds]);
+  }, [isAuthenticated, fetchAllMeds, user]);
 
-  // Update graph data based on the sample concentration map
-  useEffect(() => {
-    const data = Array.from(sampleConcentrationMap.entries()).map(([time, concentration]) => ({
-      date: new Date(time).toLocaleTimeString(), // Format time for display
-      concentration: concentration,
-    })); 
-
-    // const data = 
-    setGraphData(data);
-  }, []);
+  const handleModalClose = async (shouldRefetch = false) => {
+    setIsModalVisible(false);
+    if (shouldRefetch) {
+      await fetchGraphData(); // Refetch the graph data when the modal is closed after saving a new entry
+    }
+  };
 
   return (
     <div className="p-5 max-w-7xl mx-auto">
-      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Concentration Over Time</h1>
+      {/* Welcome Message */}
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-800">Welcome to Your ADHD Tracker</h1>
+        <p className="text-lg mt-2">
+          Track your medication concentration over time and manage your entries easily.
+        </p>
+      </div>
 
       {/* Large Scrollable Graph */}
       <div className="w-full overflow-x-auto bg-gray-50 rounded-lg shadow-md p-6 mb-8">
         <div className="min-w-[1500px] h-[500px]">
           <BarChart
-            width={1500} // Increased width for a larger graph
-            height={500} // Increased height for a larger graph
+            width={1500} 
+            height={500} 
             data={graphData}
             margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
@@ -64,24 +86,50 @@ const HomePage = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="concentration" fill="#8884d8" />
+            <Bar dataKey="intensity" fill="#8884d8" />
+
+            {/* Add a reference line for the sleep date */}
+            {sleepDate && (
+              <ReferenceLine
+                x={new Date(sleepDate).toLocaleTimeString()}
+                stroke="red"
+                label={{ value: 'Sleep Time', position: 'top' }}
+              />
+            )}
           </BarChart>
         </div>
       </div>
 
-      {/* Button to Open Modal */}
-      <Button
-        variant="primary"
-        onClick={() => setIsModalVisible(true)} // Open modal
-        className="block mx-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        Add Entry
-      </Button>
+      {/* Sleep Time Section */}
+      <div className="bg-gray-50 rounded-lg shadow-md p-6 mb-8">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sleep Time</h2>
+        <p>
+          You will be able to sleep at: 
+          <span className="font-bold">
+            {sleepDate ? sleepDate.toLocaleTimeString() : 'Calculating...'}
+          </span>
+        </p>
+      </div>
+
+      {/* Call-to-Action Section */}
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Ready to Add an Entry?</h2>
+        <p className="mb-6">
+          Click the button below to record a new medication entry.
+        </p>
+        <Button
+          variant="primary"
+          onClick={() => setIsModalVisible(true)} 
+          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Add Entry
+        </Button>
+      </div>
 
       {/* Add Entry Modal */}
       <AddEntryModal
-        isModalVisible={isModalVisible} // Pass modal visibility as prop
-        setIsModalVisible={setIsModalVisible} // Pass setter function as prop
+        isModalVisible={isModalVisible}
+        setIsModalVisible={handleModalClose}
       />
     </div>
   );

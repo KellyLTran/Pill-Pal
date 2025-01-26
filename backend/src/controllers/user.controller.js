@@ -33,47 +33,85 @@ export const getHistory = async (req, res) => {
 
 
 export const getGraph = async (req, res) => {
-  const {userID} = req.params;
-  const {startDate, endDate, currentDate} = req.query;
+  const { userID } = req.params;
+  const { startDate, endDate, currentDate } = req.query;
 
-  // Convert query parameters to Date objects
+  // Convert input dates to Date objects
   const startDateObj = new Date(startDate);
   const endDateObj = new Date(endDate);
+  const currentDateObj = new Date(currentDate);
 
-  // Get all the user's entries within the start and end date range 
-  const user = await User.findById(userID).populate({
-    path: 'entryHistory',
-    populate: { path: 'medication' }
-  });
-  if (!user) {
-    return res.status(404).json({message: "User doesn't exist!"});
+  // Validate input dates
+  if (isNaN(startDateObj) || isNaN(endDateObj) || isNaN(currentDateObj)) {
+    return res.status(400).json({ message: "Invalid date format. Use ISO format (e.g., 2023-10-10T00:00:00.000Z)." });
   }
 
-  const filteredEntries = user.entryHistory.filter(entry => {
-    return entry.usedAt >= startDateObj && entry.usedAt <= endDateObj;
-  });
-  if (filteredEntries.length === 0) {
-    return res.status(200).json({message: "No entries found."});
+  try {
+    // Fetch the user with their entries and associated medications
+    const user = await User.findById(userID)
+      .populate({
+        path: 'entryHistory',
+        populate: {
+          path: 'medication',
+          model: 'medication',
+        },
+      })
+      .exec();
+
+    if (!user) {
+      return res.status(404).json({ message: "User doesn't exist!" });
+    }
+
+    const entries = user.entryHistory;
+
+    // Filter entries within the specified date range
+    const filteredEntries = entries.filter((entry) => {
+      return entry.usedAt >= startDateObj && entry.usedAt <= endDateObj;
+    });
+
+    if (filteredEntries.length === 0) {
+      return res.status(200).json({ message: "No entries found." });
+    }
+
+    const graphData = [];
+
+    // Calculate sleep time based on the first entry's medication
+    const medication = filteredEntries[0].medication;
+    const sleepMilliseconds = medication.sleep_m * 60000; // Convert minutes to milliseconds
+    const sleepDate = new Date(currentDateObj.getTime() + sleepMilliseconds);
+
+    // Generate graph data
+    for (const entry of filteredEntries) {
+      const entryTime = entry.usedAt.getTime(); // Convert entry time to a timestamp
+
+      // Iterate over the concentration map to accumulate values
+      entry.medication.concentration_map.forEach((value, key) => {
+        const timeOffset = parseInt(key, 10); // Convert the key to a number
+        const actualTime = entryTime + timeOffset * 60000; // Convert minutes to milliseconds and add to entry time
+
+        const existingEntry = graphData.find((data) => data.date.getTime() === actualTime);
+
+        if (existingEntry) {
+          existingEntry.intensity += value;
+        } else {
+          graphData.push({
+            date: new Date(actualTime),
+            intensity: value,
+          });
+        }
+      });
+    }
+
+    // Sort the graph data by date
+    graphData.sort((a, b) => a.date - b.date);
+
+    // Return the graph data and sleep date
+    return res.status(200).json({
+      sleepDate, // When the user can sleep
+      graphData, // Graph data for the specified date range
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error while fetching graph data." });
   }
-
-  // Calculate the time to sleep based on the sleep_m variable, accounting for milliseconds in startDate
-  const medication = filteredEntries[0].medication;
-  const sleepMilliseconds = medication.sleep_m * 60000;
-  const sleepDate = new Date(startDateObj.getTime() + sleepMilliseconds);
-
-  // For each entry, get the intensity value associated with the current time
-  const graphData = [];
-  filteredEntries.forEach(entry => {
-  const entryTime = entry.usedAt.getTime().toString();
-  const intensityValue = medication.concentration_map.get(entryTime);
-  graphData.push({
-    date: entry.usedAt,
-    intensity: intensityValue 
-  })
-})
-
-  return res.status(200).json({
-    sleepDate,
-    graphData
-  });
-}
+};
