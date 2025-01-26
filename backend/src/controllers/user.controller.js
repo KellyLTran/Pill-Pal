@@ -72,7 +72,7 @@ export const getGraph = async (req, res) => {
   })
 })
 
-  return req.status(200).json({
+  return res.status(200).json({
     sleepDate,
     graphData
   });
