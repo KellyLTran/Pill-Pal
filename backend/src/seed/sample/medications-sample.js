@@ -74,6 +74,83 @@ adderall10MgBidLevoMap.set('1200', 0.38);
 adderall10MgBidLevoMap.set('1320', 0.26);
 adderall10MgBidLevoMap.set('1440', 0.13);
 
+// Hypothetical activity levels for Vyvanse ER (lisdexamfetamine)
+const vyvanseER5MgMap = new Map();
+vyvanseER5MgMap.set('0', 0.0);
+vyvanseER5MgMap.set('60', 0.15);
+vyvanseER5MgMap.set('120', 0.30);
+vyvanseER5MgMap.set('180', 0.50);
+vyvanseER5MgMap.set('240', 0.70);
+vyvanseER5MgMap.set('300', 0.85);
+vyvanseER5MgMap.set('360', 1.0);
+vyvanseER5MgMap.set('420', 0.95);
+vyvanseER5MgMap.set('480', 0.90);
+vyvanseER5MgMap.set('600', 0.80);
+vyvanseER5MgMap.set('720', 0.70);
+vyvanseER5MgMap.set('840', 0.60);
+vyvanseER5MgMap.set('960', 0.50);
+vyvanseER5MgMap.set('1080', 0.40);
+vyvanseER5MgMap.set('1200', 0.30);
+vyvanseER5MgMap.set('1320', 0.20);
+vyvanseER5MgMap.set('1440', 0.10);
+
+const vyvanseER10MgMap = new Map();
+vyvanseER10MgMap.set('0', 0.0);
+vyvanseER10MgMap.set('60', 0.20);
+vyvanseER10MgMap.set('120', 0.40);
+vyvanseER10MgMap.set('180', 0.60);
+vyvanseER10MgMap.set('240', 0.80);
+vyvanseER10MgMap.set('300', 0.90);
+vyvanseER10MgMap.set('360', 1.0);
+vyvanseER10MgMap.set('420', 0.95);
+vyvanseER10MgMap.set('480', 0.90);
+vyvanseER10MgMap.set('600', 0.85);
+vyvanseER10MgMap.set('720', 0.75);
+vyvanseER10MgMap.set('840', 0.65);
+vyvanseER10MgMap.set('960', 0.55);
+vyvanseER10MgMap.set('1080', 0.45);
+vyvanseER10MgMap.set('1200', 0.35);
+vyvanseER10MgMap.set('1320', 0.25);
+vyvanseER10MgMap.set('1440', 0.15);
+
+const vyvanseER25MgMap = new Map();
+vyvanseER25MgMap.set('0', 0.0);
+vyvanseER25MgMap.set('60', 0.25);
+vyvanseER25MgMap.set('120', 0.50);
+vyvanseER25MgMap.set('180', 0.75);
+vyvanseER25MgMap.set('240', 0.90);
+vyvanseER25MgMap.set('300', 1.0);
+vyvanseER25MgMap.set('360', 0.95);
+vyvanseER25MgMap.set('420', 0.90);
+vyvanseER25MgMap.set('480', 0.85);
+vyvanseER25MgMap.set('600', 0.80);
+vyvanseER25MgMap.set('720', 0.70);
+vyvanseER25MgMap.set('840', 0.60);
+vyvanseER25MgMap.set('960', 0.50);
+vyvanseER25MgMap.set('1080', 0.40);
+vyvanseER25MgMap.set('1200', 0.30);
+vyvanseER25MgMap.set('1320', 0.20);
+vyvanseER25MgMap.set('1440', 0.10);
+
+const vyvanseER40MgMap = new Map();
+vyvanseER40MgMap.set('0', 0.0);
+vyvanseER40MgMap.set('60', 0.30);
+vyvanseER40MgMap.set('120', 0.60);
+vyvanseER40MgMap.set('180', 0.80);
+vyvanseER40MgMap.set('240', 0.95);
+vyvanseER40MgMap.set('300', 1.0);
+vyvanseER40MgMap.set('360', 0.95);
+vyvanseER40MgMap.set('420', 0.90);
+vyvanseER40MgMap.set('480', 0.85);
+vyvanseER40MgMap.set('600', 0.80);
+vyvanseER40MgMap.set('720', 0.70);
+vyvanseER40MgMap.set('840', 0.60);
+vyvanseER40MgMap.set('960', 0.50);
+vyvanseER40MgMap.set('1080', 0.40);
+vyvanseER40MgMap.set('1200', 0.30);
+vyvanseER40MgMap.set('1320', 0.20);
+vyvanseER40MgMap.set('1440', 0.10);
+
 export const medications = [
   {
     name: 'Adderall',
@@ -102,5 +179,33 @@ export const medications = [
     release: 'IR', // Immediate Release
     sleep_m: 720,
     concentration_map: adderall10MgBidLevoMap,
+  },
+  {
+    name: 'Vyvanse',
+    dosage: 5, // Dosage in milligrams (mg)
+    release: 'XR', // Extended Release
+    sleep_m: 720, // Time in minutes till sleep
+    concentration_map: vyvanseER5MgMap, // Activation levels over time
+  },
+  {
+    name: 'Vyvanse',
+    dosage: 10,
+    release: 'XR',
+    sleep_m: 720,
+    concentration_map: vyvanseER10MgMap,
+  },
+  {
+    name: 'Vyvanse',
+    dosage: 25,
+    release: 'XR',
+    sleep_m: 720,
+    concentration_map: vyvanseER25MgMap,
+  },
+  {
+    name: 'Vyvanse',
+    dosage: 40,
+    release: 'XR',
+    sleep_m: 720,
+    concentration_map: vyvanseER40MgMap,
   },
 ];
