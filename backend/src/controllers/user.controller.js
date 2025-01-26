@@ -16,18 +16,34 @@ export const getUser = async (req, res) => {
 }
 
 export const getHistory = async (req, res) => {
-  const {userID} = req.params;
+  const { userID } = req.params;
 
-  if (!userID) return res.status(400).json({message: "Please have userID in url path."});
+  if (!userID) {
+    return res.status(400).json({ message: "Please provide userID in the URL path." });
+  }
 
-  const user = await User.findById(userID).populate("entryHistory");
+  try {
+    // Find the user and populate the entryHistory, then populate the medication field in each entry
+    const user = await User.findById(userID).populate({
+      path: 'entryHistory',
+      populate: {
+        path: 'medication',
+        model: 'medication', // Reference the Medication model
+      },
+    });
 
-  if (!user) return res.status(400).json({message: "User doesnt exist!"}) 
+    if (!user) {
+      return res.status(404).json({ message: "User doesn't exist!" });
+    }
 
-  const entryHistory = user.entryHistory;
+    const entryHistory = user.entryHistory;
 
-  res.status(200).json({entryHistory});
-}
+    res.status(200).json({ entryHistory });
+  } catch (error) {
+    console.error('Error fetching history:', error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
 
 // import { getGraphFunction, getSleep } from "../lib/graph.js";
 

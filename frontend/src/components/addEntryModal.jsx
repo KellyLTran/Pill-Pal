@@ -1,16 +1,16 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import useMedicationStore from '../hooks/medicationStore';
-import { FaCapsules, FaPills, FaTablets } from 'react-icons/fa'; // Import icons from React Icons
+import { FaCapsules, FaPills, FaTablets } from 'react-icons/fa';
 
-const AddEntryModal = ({ isModalVisible, setIsModalVisible }) => {
+const AddEntryModal = ({ isModalVisible, onClose, onSubmit }) => {
   const {
     selectedMed,
     setSelectedMed,
     selectedTime,
     setSelectedTime,
     allMeds,
-    recordEntry
+    recordEntry,
   } = useMedicationStore();
 
   const handleSubmit = async (e) => {
@@ -19,37 +19,35 @@ const AddEntryModal = ({ isModalVisible, setIsModalVisible }) => {
       alert('Please select a medication and time.');
       return;
     }
-    await recordEntry();          // Ensure recordEntry is awaited to complete the promise
-    setSelectedMed('');           // Reset selectedMed state
-    setSelectedTime('');          // Reset selectedTime state
-    setIsModalVisible(false);     // Close modal after submission
+    await recordEntry(); // Ensure recordEntry is awaited
+    setSelectedMed(''); // Reset selectedMed state
+    setSelectedTime(''); // Reset selectedTime state
+    onSubmit(); // Notify parent component of successful submission
   };
 
   const handleClose = () => {
-    setSelectedMed('');           // Reset selectedMed state
-    setSelectedTime('');          // Reset selectedTime state
-    setIsModalVisible(false);     // Close modal
+    setSelectedMed(''); // Reset selectedMed state
+    setSelectedTime(''); // Reset selectedTime state
+    onClose(); // Notify parent component to close the modal
   };
 
-  // Get the icon for a medication based on its type
   const getMedicationIcon = (med) => {
     if (med.name.toLowerCase().includes('vyvanse')) {
       return med.release === 'IR' ? (
-        <FaPills className="w-12 h-12 text-blue-500" /> // Blue pill icon for Vyvanse IR
+        <FaPills className="w-12 h-12 text-blue-500" />
       ) : (
-        <FaCapsules className="w-12 h-12 text-green-500" /> // Green capsule icon for Vyvanse XR
+        <FaCapsules className="w-12 h-12 text-green-500" />
       );
     } else {
-      return <FaTablets className="w-12 h-12 text-gray-500" />; // Gray tablet icon for non-Vyvanse medications
+      return <FaTablets className="w-12 h-12 text-gray-500" />;
     }
   };
 
-  // Get the background color for a medication based on its type
   const getMedicationColor = (med) => {
     if (med.name.toLowerCase().includes('vyvanse')) {
-      return med.release === 'IR' ? 'bg-blue-100' : 'bg-green-100'; // Different colors for IR and XR
+      return med.release === 'IR' ? 'bg-blue-100' : 'bg-green-100';
     } else {
-      return 'bg-gray-100'; // Default color for non-Vyvanse medications
+      return 'bg-gray-100';
     }
   };
 
@@ -71,7 +69,7 @@ const AddEntryModal = ({ isModalVisible, setIsModalVisible }) => {
                     selectedMed === med._id ? 'border-blue-600' : 'border-gray-300'
                   } ${getMedicationColor(med)}`}
                 >
-                  {getMedicationIcon(med)} {/* Render the appropriate icon */}
+                  {getMedicationIcon(med)}
                   <span className="mt-2 text-sm text-center">
                     {med.name}: {med.dosage} {med.release}
                   </span>

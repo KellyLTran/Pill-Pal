@@ -1,0 +1,51 @@
+@keyframes fadeAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes jutAnimation {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    50% {
+        transform: rotateZ(30deg);
+    }
+    100% {
+        transform: rotateZ(0deg); 
+    }
+}
+
+h1 {
+    opacity: 0;
+    animation-name: fadeAnimation;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+
+h2 {
+    opacity: 0;
+    animation-name: fadeAnimation;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+.pillbottle {
+    animation-name: jutAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 3s;
+}
+
+.arrow {
+    opacity: 0;
+    animation-name: fadeAnimation;
+    animation-fill-mode: forwards;
+    animation-duration: 3s;
+    animation-delay: 3s;
+
+}
