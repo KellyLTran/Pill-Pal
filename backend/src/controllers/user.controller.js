@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import Entry from "../models/entry.model.js";
+import Medication from "../models/medication.model.js";
 import mongoose from 'mongoose';
 
 export const getUser = async (req, res) => {
@@ -95,13 +96,35 @@ export const addEntry = async (req, res) => {
   res.status(200).json(entry)
 }
 
-export const getGraph = async (req, res) => {
 
+export const getGraph = async (req, res) => {
   const {userID} = req.params;
   const {startDate, endDate, currentDate} = req.status;
 
+  // Get all entries within the start and end date range 
+  const filteredEntries = await User.findById(userID)
+  .where('usedAt').gte(startDate).lte(endDate)
+  .populate('medication');
+
+  // Calculate the time to sleep based on the sleep_m variable 
+  const medication = filteredEntries[0].medication;
+  const sleepMinutes = medication.sleep_m;
+  const sleepDate = new Date(startDate.getTime() + sleepMinutes);
+
+  // For each entry, get the intensity value associated with the current time
+  const graphData = [];
+  filteredEntries.forEach(entry => {
+  const entryTime = entry.usedAt.getTime().toString();
+  const intensityValue = medication.concentration_map.get(entryTime);
+  graphData.push({
+    date: entry.usedAt,
+    intensity: intensityValue 
+  })
+})
+
   return req.status(200).json({
-    sleepDate:"",
-    graphData:""
+    sleepDate,
+    graphData
   });
 }
+
