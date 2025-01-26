@@ -1,26 +1,34 @@
-# SwampHacksX - Pill Pal
+# SwampHacksX - Pill Pal 💊  
 
-## Table of Contents
+## Table of Contents  
 
-1. [Overview](#overview)
-2. [The Problem](#the-problem)
-3. [The Solution](#the-solution)
-4. [Installation](#installation)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-5. [Technology Stack](#technology-stack)
+1. [💊 What is Pill Pal?](#what-is-pill-pal)  
+2. [🚨 The Problem](#-the-problem)  
+3. [💡 How Pill Pal Helps](#-how-pill-pal-helps)  
+4. [⚙️ How to Set Up](#️-how-to-set-up)  
+    - [🔧 Backend](#-backend)  
+    - [🖥️ Frontend](#-frontend)  
+5. [🔍 Technology Stack](#-technology-stack)
 
 ---
 
-## Overview
+## 💊 What is Pill Pal?
 
 It’s already hard enough when ADHD takes a toll on your productivity—now throw in the challenge of figuring out when your medication will kick in, when they’ll wear off, or why you’re still awake at 2 a.m. after taking a late dose. That’s where Pill Pal comes in. 
 
-Pill Pal uses historical healthcare data and trends on ADHD medication effectiveness to inform a future-focused solution that focuses on visualizing effectiveness overtime in a scalable, scrollable flow chart tailored to the user’s selection of medication type, dosage, and time taken. Beyond visualization, Pill Pal enhances the user experience by suggesting ideal sleep times, offering secure account registration and login to track medication history, enabling custom reminders, and managing overlapping medication schedules to make ADHD medication management effortless and personalized. Pill Pal can serve as a scalable solution to include other medications and become a mobile app for even easier access in the future. 
+Pill Pal uses historical healthcare data and trends on ADHD medication effectiveness to inform a future-focused solution that focuses on visualizing effectiveness overtime in a scalable, scrollable flow chart tailored to the user’s selection of medication type, dosage, and time taken. 
+
+Pill Pal also:  
+- Suggests ideal sleep times.
+- Tracks medication history securely through user accounts. 
+- Offers custom reminders.
+- Manages overlapping medications.
+
+In the future, Pill Pal could expand to include other medications and even become a mobile app for easier access.
 
 ---
 
-## The Problem
+## 🚨 The Problem
 Managing ADHD medications presents significant challenges:
 - Forgetting to take medications disrupts productivity and effectiveness.
 - Lack of insight into peak effectiveness hours impacts daily planning.
@@ -28,7 +36,7 @@ Managing ADHD medications presents significant challenges:
 
 ---
 
-## The Solution
+## 💡 How Pill Pal Helps
 **Pill Pal** provides a data-driven solution that visualizes medication effectiveness, helping users:
 - Identify peak productive hours.
 - Plan optimal times for doses.
@@ -36,9 +44,9 @@ Managing ADHD medications presents significant challenges:
 
 ---
 
-## Installation
+## ⚙️ How to Set Up
 
-### Backend
+### 🔧 Backend
 
 1. Add .env file
 
@@ -60,7 +68,7 @@ npm i
 npm run dev
 ```
 
-### Frontend
+### 🖥️ Frontend
 ```bash
 cd frontend
 npm i
@@ -69,7 +77,7 @@ npm run dev
 
 ---
 
-## Technology Stack
+## 🔍 Technology Stack
 
 - **Languages:** JavaScript and Typescript.
 - **Frameworks/Libraries:** MongoDB, Express.js, React, Node.js (MERN stack).
