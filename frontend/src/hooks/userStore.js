@@ -27,6 +27,8 @@ const useUserStore = create((set, get) => ({
   isAuthenticated: retrieveState('isAuthenticated') || false, // Initialize from localStorage
   isLoading: false, // Loading state for async operations
   error: null, // Error state for async operations
+  graphData: [], // Graph data state
+  sleepDate: null, // Sleep date state
 
   // Method to handle login
   login: async (email, password) => {
@@ -86,7 +88,7 @@ const useUserStore = create((set, get) => ({
   // Method to handle logout
   logout: () => {
     // Clear the user and token from the store
-    set({ user: null, token: null, isAuthenticated: false });
+    set({ user: null, token: null, isAuthenticated: false, graphData: [], sleepDate: null });
 
     // Clear persisted state from localStorage
     localStorage.removeItem('user');
@@ -127,6 +129,42 @@ const useUserStore = create((set, get) => ({
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       localStorage.removeItem('isAuthenticated');
+    }
+  },
+
+  // Method to fetch graph data
+  fetchGraphData: async () => {
+    const { user } = get();
+    if (!user) return;
+
+    set({ isLoading: true, error: null });
+
+    const now = new Date();
+    const startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000); // 30 days ago
+    const endDate = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+
+    try {
+      const response = await axiosInstance.get(`/user/${user._id}/graph`, {
+        params: {
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          currentDate: now.toISOString(),
+        },
+      });
+
+      const { graphData, sleepDate } = response.data;
+
+      // Format the graph data for Recharts
+      const formattedData = graphData.map((entry) => ({
+        date: new Date(entry.date).toLocaleString(),
+        intensity: entry.intensity,
+      }));
+
+      // Update the store with the graph data and sleep date
+      set({ graphData: formattedData, sleepDate: new Date(sleepDate), isLoading: false });
+    } catch (error) {
+      console.error('Error fetching graph data:', error);
+      set({ error: error.message, isLoading: false });
     }
   },
 }));

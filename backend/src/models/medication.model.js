@@ -14,7 +14,7 @@ const medicationSchema = new mongoose.Schema({
   release: {
     type: String, 
     required: true,
-    enum: ["EX", "IR"]
+    enum: ["XR", "IR"]
   },
 
   sleep_m: {

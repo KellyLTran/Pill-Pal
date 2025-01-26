@@ -1,46 +1,106 @@
+const adderallXR20MgDextroMap = new Map();
+adderallXR20MgDextroMap.set('0', 0.0);
+adderallXR20MgDextroMap.set('60', 0.25);
+adderallXR20MgDextroMap.set('120', 0.5);
+adderallXR20MgDextroMap.set('180', 0.7);
+adderallXR20MgDextroMap.set('240', 0.9);
+adderallXR20MgDextroMap.set('300', 0.95);
+adderallXR20MgDextroMap.set('360', 1.0);
+adderallXR20MgDextroMap.set('420', 0.95);
+adderallXR20MgDextroMap.set('480', 0.85);
+adderallXR20MgDextroMap.set('600', 0.72);
+adderallXR20MgDextroMap.set('720', 0.60);
+adderallXR20MgDextroMap.set('840', 0.48);
+adderallXR20MgDextroMap.set('960', 0.33);
+adderallXR20MgDextroMap.set('1080', 0.22);
+adderallXR20MgDextroMap.set('1200', 0.11);
+adderallXR20MgDextroMap.set('1320', 0.08);
+adderallXR20MgDextroMap.set('1440', 0.06);
 
-const fiveHourMap = new Map();
-fiveHourMap.set('0', 0.0);   // At 0 minutes, activation is 0
-fiveHourMap.set('30', 0.2);  // At 30 minutes, activation is 0.2
-fiveHourMap.set('60', 0.5);  // At 60 minutes, activation is 0.5
-fiveHourMap.set('90', 0.7);  // At 90 minutes, activation is 0.7
-fiveHourMap.set('120', 0.9); // At 120 minutes, activation is 0.9 (peak)
-fiveHourMap.set('150', 0.8); // At 150 minutes, activation is 0.8
-fiveHourMap.set('180', 0.7); // At 180 minutes, activation is 0.7
-fiveHourMap.set('210', 0.5); // At 210 minutes, activation is 0.5
-fiveHourMap.set('240', 0.3); // At 240 minutes, activation is 0.3
-fiveHourMap.set('270', 0.1); // At 270 minutes, activation is 0.1
-fiveHourMap.set('300', 0.0); // At 300 minutes, activation is 0.0
+const adderall10MgBidDextroMap = new Map();
+adderall10MgBidDextroMap.set('0', 0.0);
+adderall10MgBidDextroMap.set('60', 0.22);
+adderall10MgBidDextroMap.set('120', 0.44);
+adderall10MgBidDextroMap.set('180', 0.67);
+adderall10MgBidDextroMap.set('240', 0.89);
+adderall10MgBidDextroMap.set('300', 0.94);
+adderall10MgBidDextroMap.set('360', 1.0);
+adderall10MgBidDextroMap.set('420', 0.89);
+adderall10MgBidDextroMap.set('480', 0.78);
+adderall10MgBidDextroMap.set('600', 0.72);
+adderall10MgBidDextroMap.set('720', 0.67);
+adderall10MgBidDextroMap.set('840', 0.61);
+adderall10MgBidDextroMap.set('960', 0.56);
+adderall10MgBidDextroMap.set('1080', 0.39);
+adderall10MgBidDextroMap.set('1200', 0.22);
+adderall10MgBidDextroMap.set('1320', 0.16);
+adderall10MgBidDextroMap.set('1440', 0.11);
 
-const tenHourMap = new Map();
-tenHourMap.set('0', 0.0);    // At 0 minutes, activation is 0
-tenHourMap.set('60', 0.1);   // At 60 minutes, activation is 0.1
-tenHourMap.set('120', 0.3);  // At 120 minutes, activation is 0.3
-tenHourMap.set('180', 0.5);  // At 180 minutes, activation is 0.5
-tenHourMap.set('240', 0.8);  // At 240 minutes, activation is 0.8 (peak)
-tenHourMap.set('300', 0.7);  // At 300 minutes, activation is 0.7
-tenHourMap.set('360', 0.6);  // At 360 minutes, activation is 0.6
-tenHourMap.set('420', 0.5);  // At 420 minutes, activation is 0.5
-tenHourMap.set('480', 0.4);  // At 480 minutes, activation is 0.4
-tenHourMap.set('540', 0.2);  // At 540 minutes, activation is 0.2
-tenHourMap.set('600', 0.0);  // At 600 minutes, activation is 0.0
+const adderallXR20MgLevoMap = new Map();
+adderallXR20MgLevoMap.set('0', 0.0);
+adderallXR20MgLevoMap.set('60', 0.20);
+adderallXR20MgLevoMap.set('120', 0.40);
+adderallXR20MgLevoMap.set('180', 0.60);
+adderallXR20MgLevoMap.set('240', 0.80);
+adderallXR20MgLevoMap.set('300', 0.90);
+adderallXR20MgLevoMap.set('360', 1.0);
+adderallXR20MgLevoMap.set('420', 0.95);
+adderallXR20MgLevoMap.set('480', 0.90);
+adderallXR20MgLevoMap.set('600', 0.80);
+adderallXR20MgLevoMap.set('720', 0.70);
+adderallXR20MgLevoMap.set('840', 0.55);
+adderallXR20MgLevoMap.set('960', 0.40);
+adderallXR20MgLevoMap.set('1080', 0.30);
+adderallXR20MgLevoMap.set('1200', 0.20);
+adderallXR20MgLevoMap.set('1320', 0.15);
+adderallXR20MgLevoMap.set('1440', 0.10);
 
+const adderall10MgBidLevoMap = new Map();
+adderall10MgBidLevoMap.set('0', 0.0);
+adderall10MgBidLevoMap.set('60', 0.19);
+adderall10MgBidLevoMap.set('120', 0.38);
+adderall10MgBidLevoMap.set('180', 0.56);
+adderall10MgBidLevoMap.set('240', 0.75);
+adderall10MgBidLevoMap.set('300', 0.82);
+adderall10MgBidLevoMap.set('360', 1.0);
+adderall10MgBidLevoMap.set('420', 0.94);
+adderall10MgBidLevoMap.set('480', 0.88);
+adderall10MgBidLevoMap.set('600', 0.82);
+adderall10MgBidLevoMap.set('720', 0.75);
+adderall10MgBidLevoMap.set('840', 0.69);
+adderall10MgBidLevoMap.set('960', 0.63);
+adderall10MgBidLevoMap.set('1080', 0.50);
+adderall10MgBidLevoMap.set('1200', 0.38);
+adderall10MgBidLevoMap.set('1320', 0.26);
+adderall10MgBidLevoMap.set('1440', 0.13);
 
 export const medications = [
   {
-    name: '5-Hour Medication',
-    dosage: 10, // Dosage in milligrams (mg)
-    release: 'IR', // Immediate Release
-    sleep_m: 300, // time min till sleep
-    concentration_map: fiveHourMap, // Activation levels over time
+    name: 'Adderall',
+    dosage: 20, // Dosage in milligrams (mg)
+    release: 'XR', // Extended Release
+    sleep_m: 720, // Time in minutes till sleep
+    concentration_map: adderallXR20MgDextroMap, // Activation levels over time
   },
   {
-    name: '10 hour medication',
-    dosage: 25,
-    release: 'EX',
-    sleep_m: 840,
-    concentration_map: tenHourMap,
+    name: 'Adderall',
+    dosage: 10,
+    release: 'IR', // Immediate Release
+    sleep_m: 720,
+    concentration_map: adderall10MgBidDextroMap,
+  },
+  {
+    name: 'Adderall',
+    dosage: 20,
+    release: 'XR', // Extended Release
+    sleep_m: 720,
+    concentration_map: adderallXR20MgLevoMap,
+  },
+  {
+    name: 'Adderall',
+    dosage: 10,
+    release: 'IR', // Immediate Release
+    sleep_m: 720,
+    concentration_map: adderall10MgBidLevoMap,
   },
 ];
-
-

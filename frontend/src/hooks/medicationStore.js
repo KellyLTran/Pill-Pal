@@ -37,6 +37,7 @@ const useMedicationStore = create((set, get) => ({
         usedAt: new Date().toISOString(),
       });
       alert('Entry recorded successfully!');
+      
     } catch (error) {
       console.error('Error recording entry:', error);
       alert('Failed to record entry. Please try again.');
