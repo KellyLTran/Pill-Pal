@@ -21,8 +21,8 @@ const LandingPage = () => {
           
           <div style={{width: "100%", minHeight: "100%"}} className="flex flex-row items-center justify-center p-5">
               <div style={{minHeight: "calc(100% - (var(--spacing) * 16))",width: "25%"}} class="flex flex-col">
-                  <h1 style={{color: "#F0EAD6", fontSize: "6rem"}}>hi there.</h1>
-                  <h2 style={{color: "#FFFFF0"}}> welcome to pill pal.</h2>
+                  <h1 className="theH1" style={{color: "#F0EAD6", fontSize: "6rem"}}>hi there.</h1>
+                  <h2 className="theH2" style={{color: "#FFFFF0"}}> welcome to pill pal.</h2>
               </div>
 
               <div style={{width: "75%", minHeight: "calc(100% - (var(--spacing) * 16))"}} class="flex justify-end"> 

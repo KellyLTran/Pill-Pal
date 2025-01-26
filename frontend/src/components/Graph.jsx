@@ -41,12 +41,27 @@ const Graph = ({ graphData, sleepDate }) => {
     }
   };
 
+  const enrichedGraphData = sleepDate 
+  ? [...graphData].sort((a, b) => new Date(a.date) - new Date(b.date))
+      .reduce((acc, item) => {
+        if (new Date(item.date) > sleepDate && !acc.some(i => i.date === sleepDate.toISOString())) {
+          acc.push({ 
+            date: sleepDate.toISOString(), 
+            intensity: 0 
+          });
+        }
+        acc.push(item);
+        return acc;
+      }, [])
+  : graphData;
+
+
   return (
     <div className="flex-3 p-4 w-3/4 overflow-x-auto bg-gray-50 rounded-lg shadow-md">
       <div className="">
         <ResponsiveContainer width="100%" height={500}>
           <BarChart
-            data={graphData}
+            data={enrichedGraphData}
             margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
             <CartesianGrid strokeDasharray="3 3" />

@@ -20,14 +20,14 @@
     }
 }
 
-h1 {
+.theH1 {
     opacity: 0;
     animation-name: fadeAnimation;
     animation-duration: 3s;
     animation-fill-mode: forwards;
 }
 
-h2 {
+.theH2 {
     opacity: 0;
     animation-name: fadeAnimation;
     animation-duration: 3s;
