@@ -7,7 +7,7 @@ export default function Navbar() {
   const location = useLocation(); // Get the current location
 
   return (
-    <div className="font-montserrat fixed top-0 w-full shadow-lg bg-white">
+    <div className="font-montserrat fixed top-0 w-full shadow-lg bg-white z-100">
       <div className="container mx-auto flex flex-row justify-between items-center h-20 px-4">
         {/* Logo */}
         <Link to="/" className="text-black hover:text-slate-300 px-4 py-2 rounded transition duration-300">
