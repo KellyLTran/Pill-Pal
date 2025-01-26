@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { axiosInstance } from '../lib/axios'; // Import your axios instance
 
 // Create a Zustand store for user state
 const useUserStore = create((set) => ({
@@ -8,41 +9,38 @@ const useUserStore = create((set) => ({
 
   // Method to handle login
   login: async (email, password) => {
+    console.log(`Logging in with ${email} and ${password}`)
     try {
-      const response = await fetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await axiosInstance.post('/auth/login', {
+        email,
+        password,
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
+      console.log(`response: ${response}`)
 
-      const { token, user } = await response.json();
+      const { token, user } = response.data;
 
       // Update the store with the logged-in user and token
       set({ user, token, isAuthenticated: true });
+
+      return true
     } catch (error) {
       console.error('Login error:', error);
       throw error;
+
     }
   },
 
   // Method to handle signup
   signup: async (email, name, password) => {
     try {
-      const response = await fetch('/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, password }),
+      const response = await axiosInstance.post('/auth/signup', {
+        email,
+        name,
+        password,
       });
 
-      if (!response.ok) {
-        throw new Error('Signup failed');
-      }
-
-      const { token, user } = await response.json();
+      const { token, user } = response.data;
 
       // Update the store with the new user and token
       set({ user, token, isAuthenticated: true });
@@ -61,16 +59,13 @@ const useUserStore = create((set) => ({
   // Method to check authentication status (e.g., on page reload)
   checkAuth: async () => {
     try {
-      const response = await fetch('/api/auth/check', {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${useUserStore.getState().token}` },
+      const response = await axiosInstance.get('/auth/check', {
+        headers: {
+          Authorization: `Bearer ${useUserStore.getState().token}`,
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Not authenticated');
-      }
-
-      const { user } = await response.json();
+      const { user } = response.data;
 
       // Update the store with the logged-in user
       set({ user, isAuthenticated: true });

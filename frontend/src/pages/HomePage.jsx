@@ -1,72 +1,90 @@
 import React, { useState, useEffect } from "react";
-import Graph from "../components/Graph";
 import { Button } from "react-bootstrap";
+import Graph from "../components/Graph";
 import AddInfo from "../components/AddInfo";
-import { axiosInstance } from "../lib/axios";
-
-import useUserStore from "../hooks/userStore"; // Import Zustand store
+import useUserStore from "../hooks/userStore";
 import useMedicationStore from "../hooks/medicationStore";
 
 export default function HomePage() {
   const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [loading, setLoading] = useState(true); // Add loading state
 
   // Get user data from Zustand store
   const { user, isAuthenticated } = useUserStore();
-  const {allMeds, selectedMed, fetchAllMeds, recordEntry} = useMedicationStore();
+  const { allMeds, selectedMed, fetchAllMeds, setSelectedMed, recordEntry } = useMedicationStore();
 
-  useEffect(() => {
+  // Function to determine the welcome message based on the time of day
+  const getWelcomeMessage = () => {
     const currTime = new Date();
-    const morningTime = new Date();
-    morningTime.setHours(0, 0, 0, 0);
+    const hour = currTime.getHours();
 
-    const afternoonTime = new Date();
-    afternoonTime.setHours(12, 0, 0, 0);
-
-    const eveningTime = new Date();
-    eveningTime.setHours(17, 30, 0, 0);
-
-    const messages = ["Good Morning, ", "Good Afternoon, ", "Good Evening, "];
-
-    if (currTime >= morningTime && currTime < afternoonTime) {
-      setWelcomeMessage(messages[0]);
-    } else if (currTime >= afternoonTime && currTime < eveningTime) {
-      setWelcomeMessage(messages[1]);
+    if (hour >= 0 && hour < 12) {
+      return "Good Morning, ";
+    } else if (hour >= 12 && hour < 17) {
+      return "Good Afternoon, ";
     } else {
-      setWelcomeMessage(messages[2]);
+      return "Good Evening, ";
     }
+  };
 
-    fetchAllMeds();
-  }, []);
+  // Fetch medications and set welcome message on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setWelcomeMessage(getWelcomeMessage());
+        await fetchAllMeds();
+      } catch (error) {
+        console.error("Error fetching medications:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching data
+      }
+    };
+
+    fetchData();
+  }, [fetchAllMeds]);
+
+  // Show loading state while fetching data
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#ff6b6b] text-white">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        fontFamily: "Montserrat",
-        fontWeight: "bold",
-        backgroundColor: "#ff6b6b",
-        height: "100vh",
-      }}
-      className="flex flex-col items-center justify-center pt-3 text-center text-white"
-    >
-      <div>
-        <h1 className="mb-3 text-3xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#ff6b6b] text-white font-montserrat font-bold">
+      {/* Welcome Message */}
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl">
           {welcomeMessage} {user ? user.name : "Guest"}
         </h1>
       </div>
 
-      <div className="flex flex-row">
-        <AddInfo allMeds={allMeds} setSelectedMed={setSelectedMed} />
-        <Graph />
+      {/* Main Content */}
+      <div className="flex flex-col md:flex-row gap-8 w-full max-w-4xl px-4">
+        {/* AddInfo Component */}
+        <div className="flex-1">
+          <AddInfo allMeds={allMeds} setSelectedMed={setSelectedMed} />
+        </div>
+
+        {/* Graph Component */}
+        <div className="flex-1">
+          <Graph />
+        </div>
       </div>
 
+      {/* Record Entry Button (only for authenticated users) */}
       {isAuthenticated && (
-        <Button
-          style={{ backgroundColor: "white", color: "black", border: "none" }}
-          disabled={!selectedMed}
-          onClick={recordEntry}
-        >
-          Record Entry
-        </Button>
+        <div className="mt-8">
+          <Button
+            className="bg-white text-black border-none hover:bg-gray-100 transition-colors"
+            disabled={!selectedMed}
+            onClick={() => recordEntry(user.id)} // Pass the user ID to recordEntry
+          >
+            Record Entry
+          </Button>
+        </div>
       )}
     </div>
   );

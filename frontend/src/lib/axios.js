@@ -6,5 +6,8 @@ const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 
 export const axiosInstance = axios.create({
   baseURL:`http://localhost:3001/api`,
-  withCredentials: true
+  withCredentials: true,  
+  headers: {
+    'Content-Type': 'application/json', // Ensure the content type is set
+  },
 });
