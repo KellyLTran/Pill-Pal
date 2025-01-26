@@ -6,6 +6,6 @@ const userRouter = express.Router()
 
 userRouter.get("/:userID", getUser);
 userRouter.get("/:userID/history", getHistory);
-userRouter.get("/:userID/graph", getGraph );
+userRouter.get("/:userID/graph", getGraph);
 
 export default userRouter;
