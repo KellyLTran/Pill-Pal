@@ -29,7 +29,7 @@ export const getHistory = async (req, res) => {
   res.status(200).json({entryHistory});
 }
 
-import { getGraphFunction, getSleep } from "../lib/graph.js";
+// import { getGraphFunction, getSleep } from "../lib/graph.js";
 
 
 export const getGraph = async (req, res) => {
@@ -41,14 +41,17 @@ export const getGraph = async (req, res) => {
   const endDateObj = new Date(endDate);
 
   // Get all the user's entries within the start and end date range 
-  const user = await User.findById(userID)
-  .where('usedAt').gte(startDateObj).lte(endDateObj)
-  .populate('medication');
+  const user = await User.findById(userID).populate({
+    path: 'entryHistory',
+    populate: { path: 'medication' }
+  });
   if (!user) {
     return res.status(404).json({message: "User doesn't exist!"});
   }
 
-  const filteredEntries = user.entryHistory;
+  const filteredEntries = user.entryHistory.filter(entry => {
+    return entry.usedAt >= startDateObj && entry.usedAt <= endDateObj;
+  });
   if (filteredEntries.length === 0) {
     return res.status(200).json({message: "No entries found."});
   }
@@ -74,4 +77,3 @@ export const getGraph = async (req, res) => {
     graphData
   });
 }
-
