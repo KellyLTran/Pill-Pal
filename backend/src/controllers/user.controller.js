@@ -36,9 +36,13 @@ export const getGraph = async (req, res) => {
   const {userID} = req.params;
   const {startDate, endDate, currentDate} = req.query;
 
+  // Convert query parameters to Date objects
+  const startDateObj = new Date(startDate);
+  const endDateObj = new Date(endDate);
+
   // Get all the user's entries within the start and end date range 
   const user = await User.findById(userID)
-  .where('usedAt').gte(startDate).lte(endDate)
+  .where('usedAt').gte(startDateObj).lte(endDateObj)
   .populate('medication');
   if (!user) {
     return res.status(404).json({message: "User doesn't exist!"});
@@ -52,7 +56,7 @@ export const getGraph = async (req, res) => {
   // Calculate the time to sleep based on the sleep_m variable, accounting for milliseconds in startDate
   const medication = filteredEntries[0].medication;
   const sleepMilliseconds = medication.sleep_m * 60000;
-  const sleepDate = new Date(startDate.getTime() + sleepMilliseconds);
+  const sleepDate = new Date(startDateObj.getTime() + sleepMilliseconds);
 
   // For each entry, get the intensity value associated with the current time
   const graphData = [];
