@@ -39,7 +39,7 @@ export const deleteEntry = async (req, res) => {
 
 export const addEntry = async (req, res) => {
   const { userID, medicationID } = req.params;
-  const { usedAt } = req.body;
+  const { usedAt, reminderTime } = req.body;
 
   // Validate userID
   if (!mongoose.Types.ObjectId.isValid(userID)) {
@@ -60,8 +60,22 @@ export const addEntry = async (req, res) => {
       return res.status(404).json({ message: "User not found!" });
     }
 
+    // Remind the user to take medication based on their optional, input reminder time
+    let reminderTimeObj = null;
+    if (reminderTime) {
+      const currentTime = new Date();
+      const reminderTimeObj = new Date(reminderTime);
+      const timeUntilReminder = reminderTimeObj - currentTime;
+
+      if (timeUntilReminder > 0) {
+        setTimeout(() => {
+          console.log(`Reminder: Time to take your medication!`);
+        }, timeUntilReminder);
+      }
+    }
+
     // Create a new entry
-    const entry = await Entry.create({ usedAt, medication:medicationObjectId });
+    const entry = await Entry.create({ usedAt, medication:medicationObjectId, reminderTime: reminderTimeObj });
 
     // Add the entry to the user's entryHistory
     user.entryHistory.push(entry._id);

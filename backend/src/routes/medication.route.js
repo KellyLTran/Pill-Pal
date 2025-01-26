@@ -4,10 +4,7 @@ import {getAllMedications, getMedication} from '../controllers/medication.contro
 
 const medicationRouter = express.Router()
 
-// GET all meds
 medicationRouter.get('/', getAllMedications);
-
-// GET a single med
 medicationRouter.get('/:medicationID', getMedication);
 
 export default medicationRouter;
