@@ -151,6 +151,84 @@ vyvanseER40MgMap.set('1200', 0.30);
 vyvanseER40MgMap.set('1320', 0.20);
 vyvanseER40MgMap.set('1440', 0.10);
 
+
+const ritalinIR5MgMap = new Map();
+ritalinIR5MgMap.set('0', 0.0);
+ritalinIR5MgMap.set('60', 0.4);
+ritalinIR5MgMap.set('120', 1.0);
+ritalinIR5MgMap.set('180', 0.7);
+ritalinIR5MgMap.set('240', 0.4);
+ritalinIR5MgMap.set('300', 0.2);
+ritalinIR5MgMap.set('360', 0.1);
+ritalinIR5MgMap.set('420', 0.05);
+ritalinIR5MgMap.set('480', 0.0);
+ritalinIR5MgMap.set('600', 0.0);
+ritalinIR5MgMap.set('720', 0.0);
+ritalinIR5MgMap.set('840', 0.0);
+ritalinIR5MgMap.set('960', 0.0);
+ritalinIR5MgMap.set('1080', 0.0);
+ritalinIR5MgMap.set('1200', 0.0);
+ritalinIR5MgMap.set('1320', 0.0);
+ritalinIR5MgMap.set('1440', 0.0);
+
+const ritalinIR10MgMap = new Map();
+ritalinIR10MgMap.set('0', 0.0);
+ritalinIR10MgMap.set('60', 0.5);
+ritalinIR10MgMap.set('120', 1.0); 
+ritalinIR10MgMap.set('180', 0.8);
+ritalinIR10MgMap.set('240', 0.5);
+ritalinIR10MgMap.set('300', 0.3);
+ritalinIR10MgMap.set('360', 0.1);
+ritalinIR10MgMap.set('420', 0.05);
+ritalinIR10MgMap.set('480', 0.0);
+ritalinIR10MgMap.set('600', 0.0);
+ritalinIR10MgMap.set('720', 0.0);
+ritalinIR10MgMap.set('840', 0.0);
+ritalinIR10MgMap.set('960', 0.0);
+ritalinIR10MgMap.set('1080', 0.0);
+ritalinIR10MgMap.set('1200', 0.0);
+ritalinIR10MgMap.set('1320', 0.0);
+ritalinIR10MgMap.set('1440', 0.0);
+
+const ritalinIR20MgMap = new Map();
+ritalinIR20MgMap.set('0', 0.0);
+ritalinIR20MgMap.set('60', 0.6);
+ritalinIR20MgMap.set('120', 1.0);
+ritalinIR20MgMap.set('180', 0.9);
+ritalinIR20MgMap.set('240', 0.6); 
+ritalinIR20MgMap.set('300', 0.4);
+ritalinIR20MgMap.set('360', 0.2);
+ritalinIR20MgMap.set('420', 0.1);
+ritalinIR20MgMap.set('480', 0.05);
+ritalinIR20MgMap.set('600', 0.0);
+ritalinIR20MgMap.set('720', 0.0);
+ritalinIR20MgMap.set('840', 0.0);
+ritalinIR20MgMap.set('960', 0.0);
+ritalinIR20MgMap.set('1080', 0.0);
+ritalinIR20MgMap.set('1200', 0.0);
+ritalinIR20MgMap.set('1320', 0.0);
+ritalinIR20MgMap.set('1440', 0.0);
+
+const ritalinSR20MgMap = new Map();
+ritalinSR20MgMap.set('0', 0.0);
+ritalinSR20MgMap.set('60', 0.2);
+ritalinSR20MgMap.set('120', 0.4);
+ritalinSR20MgMap.set('180', 0.6);
+ritalinSR20MgMap.set('240', 0.8);
+ritalinSR20MgMap.set('300', 1.0);
+ritalinSR20MgMap.set('360', 0.95);
+ritalinSR20MgMap.set('420', 0.9);
+ritalinSR20MgMap.set('480', 0.85);
+ritalinSR20MgMap.set('600', 0.7);
+ritalinSR20MgMap.set('720', 0.5);
+ritalinSR20MgMap.set('840', 0.3);
+ritalinSR20MgMap.set('960', 0.2);
+ritalinSR20MgMap.set('1080', 0.1);
+ritalinSR20MgMap.set('1200', 0.05);
+ritalinSR20MgMap.set('1320', 0.0);
+ritalinSR20MgMap.set('1440', 0.0);
+
+
 export const medications = [
   {
     name: 'Adderall',
@@ -207,5 +285,33 @@ export const medications = [
     release: 'XR',
     sleep_m: 720,
     concentration_map: vyvanseER40MgMap,
+  },
+  {
+    name: 'Ritalin',
+    dosage: 5,
+    release: 'IR',
+    sleep_m: 240,
+    concentration_map: ritalinIR5MgMap,
+  },
+  {
+    name: 'Ritalin',
+    dosage: 10,
+    release: 'IR',
+    sleep_m: 240,
+    concentration_map: ritalinIR10MgMap,
+  },
+  {
+    name: 'Ritalin',
+    dosage: 20,
+    release: 'IR',
+    sleep_m: 240,
+    concentration_map: ritalinIR20MgMap,
+  },
+  {
+    name: 'Ritalin',
+    dosage: 20,
+    release: 'SR', // Sustained release
+    sleep_m: 480, 
+    concentration_map: ritalinSR20MgMap,
   },
 ];
