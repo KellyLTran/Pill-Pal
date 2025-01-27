@@ -12,7 +12,12 @@ import { handleError } from './middleware/error.js';
 
 import cors from 'cors'
 
-dotenv.config()
+
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config({ path: '.env.test' });
+} else {
+  dotenv.config();
+}
 
 const PORT = process.env.PORT;
 
@@ -30,9 +35,16 @@ app.use(cors({
 app.use('/api/auth', authRouter);
 app.use('/api/medication', medicationRouter);
 app.use('/api/user', userRouter);
-app.use('/api/entry', entryRouter)
+app.use('/api/entry', entryRouter);
 
-app.listen(PORT, () => {
-  console.log("Began server on port ", PORT);
-  connectDB();
-});
+
+if (process.env.NODE_ENV !== 'test'){
+
+
+  app.listen(PORT, () => {
+    console.log("Began server on port ", PORT);
+    connectDB();
+  });
+}
+
+export default app;

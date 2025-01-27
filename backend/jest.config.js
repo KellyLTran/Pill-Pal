@@ -1,7 +1,9 @@
-export default {
+module.exports = {
   testEnvironment: 'node',
-  transform: {}, // Disable Babel transformation
-  extensionsToTreatAsEsm: ['.js'], // Treat .js files as ES Modules
+  transform: {
+    '^.+\\.js$': 'babel-jest', // Use Babel to transform .js files
+  },
+  extensionsToTreatAsEsm: ['.jsx'], // Treat .jsx files as ES Modules
   globals: {
     'ts-jest': {
       useESM: true,

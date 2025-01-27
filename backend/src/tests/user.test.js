@@ -4,6 +4,12 @@ import User from '../models/user.model.js';
 import Entry from '../models/entry.model.js';
 import mongoose from 'mongoose';
 
+/* Connecting to the database before each test. */
+beforeEach(async () => {
+  await mongoose.connect(process.env.MONGODB_URI);
+});
+
+
 describe('User Routes', () => {
   beforeAll(async () => {
     // Connect to a test database

@@ -3,6 +3,19 @@ import app from '../server.js'; // Import your Express app
 import User from '../models/user.model.js';
 import mongoose from 'mongoose';
 
+import dotenv from 'dotenv'
+
+dotenv.config({ path: '.env.test' });
+
+beforeAll(async () => {
+  await mongoose.connect(process.env.MONGODB_URI_TEST);
+});
+
+afterAll(async () => {
+  await mongoose.connection.dropDatabase(); // Clean up the test database
+  await mongoose.connection.close();
+});
+
 describe('Auth Routes', () => {
   beforeAll(async () => {
     // Connect to a test database
