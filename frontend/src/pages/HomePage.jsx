@@ -4,7 +4,7 @@ import useUserStore from '../hooks/userStore';
 import { Button } from 'react-bootstrap';
 import AddEntryModal from '../components/addEntryModal';
 import { format } from 'date-fns';
-import Graph from '../components/Graph';
+import ScrollableGraph from '../components/Graph/ScrollableGraph.jsx';
 
 const HomePage = () => {
   const { fetchAllMeds } = useMedicationStore();
@@ -19,21 +19,19 @@ const HomePage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false); // State to trigger re-fetch
 
-
   // Fetch all medications and graph data when the user is authenticated or refreshTrigger changes
   useEffect(() => {
-    if (isAuthenticated && user) {
-      fetchAllMeds();
-      fetchGraphData();
-    }
-  }, [isAuthenticated, user, fetchAllMeds]);
+    const doThing = async () => {
 
-  // Fetch all medications and graph data when the user is authenticated or refreshTrigger changes
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      fetchAllMeds();
-      fetchGraphData();
+      if (isAuthenticated && user) {
+        await fetchAllMeds();
+        await fetchGraphData();
+        console.log("graphData:", graphData)
+      }
     }
+
+    doThing()
+    
   }, [isAuthenticated, user, fetchAllMeds, fetchGraphData, refreshTrigger]);
 
   const handleModalClose = () => {
@@ -77,7 +75,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <Graph graphData={graphData} sleepDate={sleepDate} />
+        <ScrollableGraph graphData={graphData}/>
       </div>
 
       <AddEntryModal

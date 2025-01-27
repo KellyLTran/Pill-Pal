@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 import { format } from 'date-fns';
 
-const Graph = ({ graphData, sleepDate }) => {
+const GraphRecharts = ({ graphData, sleepDate }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Log graphData, sleepDate, and currentTime for debugging

@@ -20,12 +20,12 @@ const LandingPage = () => {
       <div style={{width: "100vw", height: "calc(100% - (var(--spacing) * 16)", background: "linear-gradient(#ff6b6b, #feb47b)"}} className="flex flex-col justify-center items-center"> 
           
           <div style={{width: "100%", minHeight: "100%"}} className="flex flex-row items-center justify-center p-5">
-              <div style={{minHeight: "calc(100% - (var(--spacing) * 16))",width: "25%"}} class="flex flex-col">
+              <div style={{minHeight: "calc(100% - (var(--spacing) * 16))",width: "25%"}} className="flex flex-col">
                   <h1 className="theH1" style={{color: "#F0EAD6", fontSize: "6rem"}}>hi there.</h1>
                   <h2 className="theH2" style={{color: "#FFFFF0"}}> welcome to pill pal.</h2>
               </div>
 
-              <div style={{width: "75%", minHeight: "calc(100% - (var(--spacing) * 16))"}} class="flex justify-end"> 
+              <div style={{width: "75%", minHeight: "calc(100% - (var(--spacing) * 16))"}} className="flex justify-end"> 
                   <img className='pillbottle' src="pillbottle.webp" />    
               </div>
               
