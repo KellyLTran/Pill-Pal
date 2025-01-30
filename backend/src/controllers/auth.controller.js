@@ -23,7 +23,7 @@ export const login = async (req, res) => {
     // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials.' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     // Generate a JWT token
@@ -51,7 +51,7 @@ export const signup = async (req, res) => {
 
   // Validate input fields
   if (!email || !name || !password) {
-    return res.status(400).json({ message: "Please provide all required fields: email, name, password." });
+    return res.status(400).json({ message: "Invalid signup parameters." });
   }
 
   // Validate email format

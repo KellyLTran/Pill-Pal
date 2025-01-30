@@ -223,3 +223,7 @@ export const getOverlappingGraph = async (req, res) => {
     return res.status(500).json({ message: "Server error while fetching overlapping graph data." });
   }
 };
+
+export const getSleep = async (req, res) => {
+  // get the date the user can sleep from the entries and medications being used
+}

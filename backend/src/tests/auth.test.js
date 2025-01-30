@@ -12,7 +12,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.connection.dropDatabase(); // Clean up the test database
+  await User.deleteMany({}); // Clean up the test database
   await mongoose.connection.close();
 });
 
