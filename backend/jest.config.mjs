@@ -1,7 +1,9 @@
+// jest.config.js (ES Module)
 export default {
   testEnvironment: 'node',
-  transform: {}, // Disable Babel transformation
-  extensionsToTreatAsEsm: ['.js'], // Treat .js files as ES Modules
+  transform: {
+    '^.+\\.js$': 'babel-jest', // Use Babel to transform .js files
+  },
   globals: {
     'ts-jest': {
       useESM: true,

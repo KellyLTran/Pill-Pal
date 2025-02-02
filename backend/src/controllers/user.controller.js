@@ -53,14 +53,10 @@ export const getGraph = async (req, res) => {
   const { startDate, endDate, currentDate } = req.query;
 
   // Convert input dates to Date objects
-  const startDateObj = new Date(startDate);
-  const endDateObj = new Date(endDate);
-  const currentDateObj = new Date(currentDate);
-
-  // Validate input dates
-  if (isNaN(startDateObj) || isNaN(endDateObj) || isNaN(currentDateObj)) {
-    return res.status(400).json({ message: "Invalid date format. Use ISO format (e.g., 2023-10-10T00:00:00.000Z)." });
-  }
+  const startDateObj = startDate ? new Date(startDate) : new Date('1900-01-01');  // Use a very old date if missing
+  const endDateObj = endDate ? new Date(endDate) : new Date('3000-01-01');      // Use a very far future date if missing
+  const currentDateObj = currentDate ? new Date(currentDate) : new Date();      // Default to the current date if missing
+  
 
   try {
     // Fetch the user with their entries and associated medications
@@ -223,3 +219,40 @@ export const getOverlappingGraph = async (req, res) => {
     return res.status(500).json({ message: "Server error while fetching overlapping graph data." });
   }
 };
+
+export const getSleep = async (req, res) => {
+  // get the date the user can sleep from the entries and medications being used
+
+  const {userID} = req.params;
+
+  try {
+
+    const user = await User.findById(userID)
+      .populate({
+        path: "entryHistory",
+        options: { sort: {usedAt: -1}, limit:1},
+        populate: {
+          path:'medication',
+          model: 'medication'
+        }
+      });
+
+    if (!user) return res.status(401).json({message: "Invalid userID given"});
+    
+    if (!user.entryHistory || user.entryHistory.length === 0) return res.status(400).json({message:"No entries found."})
+
+    const recent_entry = user.entryHistory[0];
+
+    const keysArray = Array.from(recent_entry.medication.concentration_map.keys());
+    const keysHighest = Math.max(...keysArray);
+    const total_min_after = keysHighest + recent_entry.medication.sleep_m;
+    const new_timestamp =  recent_entry.usedAt.getTime() + total_min_after * 60000;
+    const sleepDate = new Date(new_timestamp);
+    return res.status(200).json({sleepDate})
+  
+  } catch (error) {
+    console.log("Error occured: ", error);
+    return res.status(400).json({message:"Error occured in getting sleep..."})
+  }
+  
+}

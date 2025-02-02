@@ -310,7 +310,7 @@ export const medications = [
   {
     name: 'Ritalin',
     dosage: 20,
-    release: 'SR', // Sustained release
+    release: 'XR', // Sustained release
     sleep_m: 480, 
     concentration_map: ritalinSR20MgMap,
   },

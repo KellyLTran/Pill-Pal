@@ -3,6 +3,7 @@ import User from '../models/user.model';
 
 // use this for protected routes
 const protectedRoute = (req, res, next) => {
+
   const token = req.cookies.jwt;
 
   if (!token) return res.status(401).json({message: 'No token, authorization denied.'});

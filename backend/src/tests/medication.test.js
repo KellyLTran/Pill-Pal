@@ -6,10 +6,7 @@ import mongoose from 'mongoose';
 describe('Medication Routes', () => {
   beforeAll(async () => {
     // Connect to a test database
-    await mongoose.connect(process.env.MONGODB_URI_TEST, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGODB_URI_TEST);
   });
 
   afterAll(async () => {
@@ -26,7 +23,7 @@ describe('Medication Routes', () => {
         dosage: 500,
         release: 'IR',
         sleep_m: 6,
-        concentration_map: new Map([['hour1', 10]]),
+        concentration_map: {40: 0.5, 80:1, 160:0.5, 250:0},
       });
 
       const res = await request(app).get('/api/medication');
@@ -42,13 +39,12 @@ describe('Medication Routes', () => {
       const medication = await Medication.create({
         name: 'Medication B',
         dosage: 250,
-        release: 'EX',
-        sleep_m: 8,
-        concentration_map: new Map([['hour1', 15]]),
+        release: 'XR',
+        sleep_m: 800,
+        concentration_map: {40: 0.5, 80:1, 160:0.5, 250:0},
       });
 
       const res = await request(app).get(`/api/medication/${medication._id}`);
-
       expect(res.statusCode).toEqual(200);
       expect(res.body.name).toEqual('Medication B');
     });
@@ -60,4 +56,5 @@ describe('Medication Routes', () => {
       expect(res.body.message).toEqual('Invalid parameters!');
     });
   });
+
 });
