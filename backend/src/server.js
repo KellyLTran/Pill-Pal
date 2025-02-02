@@ -13,7 +13,6 @@ import { loggerMiddleware } from './middleware/logging.js';
 
 import cors from 'cors'
 
-
 if (process.env.NODE_ENV === 'test') {
   dotenv.config({ path: '.env.test' });
 } else {

@@ -53,14 +53,10 @@ export const getGraph = async (req, res) => {
   const { startDate, endDate, currentDate } = req.query;
 
   // Convert input dates to Date objects
-  const startDateObj = new Date(startDate);
-  const endDateObj = new Date(endDate);
-  const currentDateObj = new Date(currentDate);
-
-  // Validate input dates
-  if (isNaN(startDateObj) || isNaN(endDateObj) || isNaN(currentDateObj)) {
-    return res.status(400).json({ message: "Invalid date format. Use ISO format (e.g., 2023-10-10T00:00:00.000Z)." });
-  }
+  const startDateObj = startDate ? new Date(startDate) : new Date('1900-01-01');  // Use a very old date if missing
+  const endDateObj = endDate ? new Date(endDate) : new Date('3000-01-01');      // Use a very far future date if missing
+  const currentDateObj = currentDate ? new Date(currentDate) : new Date();      // Default to the current date if missing
+  
 
   try {
     // Fetch the user with their entries and associated medications
@@ -249,12 +245,9 @@ export const getSleep = async (req, res) => {
 
     const keysArray = Array.from(recent_entry.medication.concentration_map.keys());
     const keysHighest = Math.max(...keysArray);
-    console.log("meoq1")
     const total_min_after = keysHighest + recent_entry.medication.sleep_m;
-    console.log("meoq2")
     const new_timestamp =  recent_entry.usedAt.getTime() + total_min_after * 60000;
     const sleepDate = new Date(new_timestamp);
-    console.log("meoq3")
     return res.status(200).json({sleepDate})
   
   } catch (error) {

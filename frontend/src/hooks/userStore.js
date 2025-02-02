@@ -162,11 +162,28 @@ const useUserStore = create((set, get) => ({
       }));
 
       // Update the store with the graph data and sleep date
-      set({ graphData: formattedData, sleepDate: new Date(sleepDate), isLoading: false });
+      set({ graphData: formattedData, isLoading: false });
     } catch (error) {
       console.error('Error fetching graph data:', error);
       set({ error: error.message, isLoading: false });
     }
+  },
+
+  fetchSleepDate: async () => {
+    const { user } = get();
+    if (!user) return;    
+
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axiosInstance.get(`/user/${user._id}/sleep`)
+      const {sleepDate} = response.data;
+      set({sleepDate: new Date(sleepDate), isLoading: false});
+
+    } catch (error) {
+      console.error("Error fetching sleep data: ", error)
+      set({error: error.message, isLoading: false})
+    }
+
   },
 
   deleteUserEntry: async (userId, entryId) => {

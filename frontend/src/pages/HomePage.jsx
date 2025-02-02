@@ -11,10 +11,10 @@ const HomePage = () => {
   const {
     isAuthenticated,
     user,
-    refreshUser,
     graphData,
     sleepDate,
     fetchGraphData,
+    fetchSleepDate
   } = useUserStore();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(false); // State to trigger re-fetch
@@ -25,16 +25,9 @@ const HomePage = () => {
     if (isAuthenticated && user) {
       fetchAllMeds();
       fetchGraphData();
+      fetchSleepDate();
     }
-  }, [isAuthenticated, user, fetchAllMeds]);
-
-  // Fetch all medications and graph data when the user is authenticated or refreshTrigger changes
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      fetchAllMeds();
-      fetchGraphData();
-    }
-  }, [isAuthenticated, user, fetchAllMeds, fetchGraphData, refreshTrigger]);
+  }, [isAuthenticated, user, fetchAllMeds, fetchGraphData, fetchSleepDate, refreshTrigger]);
 
   const handleModalClose = () => {
     setIsModalVisible(false);
