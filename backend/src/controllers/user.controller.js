@@ -226,4 +226,40 @@ export const getOverlappingGraph = async (req, res) => {
 
 export const getSleep = async (req, res) => {
   // get the date the user can sleep from the entries and medications being used
+
+  const {userID} = req.params;
+
+  try {
+
+    const user = await User.findById(userID)
+      .populate({
+        path: "entryHistory",
+        options: { sort: {usedAt: -1}, limit:1},
+        populate: {
+          path:'medication',
+          model: 'medication'
+        }
+      });
+
+    if (!user) return res.status(401).json({message: "Invalid userID given"});
+    
+    if (!user.entryHistory || user.entryHistory.length === 0) return res.status(400).json({message:"No entries found."})
+
+    const recent_entry = user.entryHistory[0];
+
+    const keysArray = Array.from(recent_entry.medication.concentration_map.keys());
+    const keysHighest = Math.max(...keysArray);
+    console.log("meoq1")
+    const total_min_after = keysHighest + recent_entry.medication.sleep_m;
+    console.log("meoq2")
+    const new_timestamp =  recent_entry.usedAt.getTime() + total_min_after * 60000;
+    const sleepDate = new Date(new_timestamp);
+    console.log("meoq3")
+    return res.status(200).json({sleepDate})
+  
+  } catch (error) {
+    console.log("Error occured: ", error);
+    return res.status(400).json({message:"Error occured in getting sleep..."})
+  }
+  
 }

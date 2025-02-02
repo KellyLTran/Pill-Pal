@@ -3,9 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const login = async (req, res) => {
-  
-  console.log("got a login request!: ", req.body)
-  
+    
   const { email, password } = req.body;
 
   // Validate input fields

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000",
+    "test:debug": "cross-env NODE_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand --testTimeout=5000",
     "dev": "nodemon src/server.js",
     "debug":"nodemon --inspect src/server.js",
     "lint": "eslint src/**/*.js",

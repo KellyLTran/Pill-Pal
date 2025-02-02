@@ -2,13 +2,15 @@ import request from 'supertest';
 import app from '../server.js'; // Import your Express app
 import User from '../models/user.model.js';
 import mongoose from 'mongoose';
-
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.test' });
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGODB_URI_TEST);
+  await mongoose.connect(process.env.MONGODB_URI_TEST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
 afterAll(async () => {
@@ -17,20 +19,6 @@ afterAll(async () => {
 });
 
 describe('Auth Routes', () => {
-  beforeAll(async () => {
-    // Connect to a test database
-    await mongoose.connect(process.env.MONGODB_URI_TEST, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  });
-
-  afterAll(async () => {
-    // Clear the database and close the connection
-    await User.deleteMany({});
-    await mongoose.connection.close();
-  });
-
   describe('POST /api/auth/signup', () => {
     it('should create a new user', async () => {
       const res = await request(app)

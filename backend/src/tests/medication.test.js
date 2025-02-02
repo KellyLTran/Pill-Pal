@@ -45,7 +45,6 @@ describe('Medication Routes', () => {
       });
 
       const res = await request(app).get(`/api/medication/${medication._id}`);
-
       expect(res.statusCode).toEqual(200);
       expect(res.body.name).toEqual('Medication B');
     });
@@ -57,4 +56,5 @@ describe('Medication Routes', () => {
       expect(res.body.message).toEqual('Invalid parameters!');
     });
   });
+
 });

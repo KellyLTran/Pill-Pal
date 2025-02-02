@@ -26,7 +26,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use(loggerMiddleware);
+// app.use(loggerMiddleware);
 
 // app.use(handleError);
 app.use(cors({

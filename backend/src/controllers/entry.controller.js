@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import Entry from "../models/entry.model.js";
+import Medication from "../models/medication.model.js";
 
 export const deleteEntry = async (req, res) => {
   const { userID, entryID } = req.params;
@@ -39,43 +40,59 @@ export const deleteEntry = async (req, res) => {
 
 export const addEntry = async (req, res) => {
   const { userID, medicationID } = req.params;
-  const { usedAt, reminderTime } = req.body;
+  let { usedAt, reminderTime } = req.body;
 
-  // Validate userID
-  if (!mongoose.Types.ObjectId.isValid(userID)) {
-    return res.status(400).json({ message: "Invalid userID!" });
+  if (!userID || !medicationID) {
+    return res.status(400).json({ message: "Please provide userID and medicationID in the URL." });
   }
 
-  if (!userID || !medicationID) return res.status(400).json({message: "Please submit all url parameters: userID, medicationID"})
+  // Validate userID and medicationID
+  if (!mongoose.Types.ObjectId.isValid(userID) || !mongoose.Types.ObjectId.isValid(medicationID)) {
+    return res.status(400).json({ message: "Invalid userID or medicationID!" });
+  }
 
-  // Validate required fields
-  if (!usedAt) return res.status(400).json({ message: "Please provide all of body: usedAt"});
+  // Check if medication exists
+  const medication = await Medication.findById(medicationID);
+  if (!medication) {
+    return res.status(404).json({ message: "Medication not found!" });
+  }
+
+  // Parse usedAt from body or set to current time
+  let usedAtValue = new Date();
+  if (usedAt) {
+    const parsedDate = new Date(usedAt);
+    if (!isNaN(parsedDate.getTime())) {
+      usedAtValue = parsedDate;
+    } else {
+      return res.status(400).json({ message: "Invalid usedAt date format!" });
+    }
+  }
 
   try {
     // Find the user
-    const medicationObjectId = new mongoose.Types.ObjectId(medicationID);
-
     const user = await User.findById(userID);
     if (!user) {
       return res.status(404).json({ message: "User not found!" });
     }
 
-    // Remind the user to take medication based on their optional, input reminder time
+    // Handle reminder time
     let reminderTimeObj = null;
     if (reminderTime) {
-      const currentTime = new Date();
-      const reminderTimeObj = new Date(reminderTime);
-      const timeUntilReminder = reminderTimeObj - currentTime;
-
-      if (timeUntilReminder > 0) {
-        setTimeout(() => {
-          console.log(`Reminder: Time to take your medication!`);
-        }, timeUntilReminder);
+      reminderTimeObj = new Date(reminderTime);
+      if (!isNaN(reminderTimeObj.getTime())) {
+        const timeUntilReminder = reminderTimeObj - new Date();
+        if (timeUntilReminder > 0) {
+          setTimeout(() => {
+            console.log(`Reminder: Time to take your medication!`);
+          }, timeUntilReminder);
+        }
+      } else {
+        return res.status(400).json({ message: "Invalid reminderTime format!" });
       }
     }
 
     // Create a new entry
-    const entry = await Entry.create({ usedAt, medication:medicationObjectId, reminderTime: reminderTimeObj });
+    const entry = await Entry.create({ usedAt: usedAtValue, medication: medicationID, reminderTime: reminderTimeObj });
 
     // Add the entry to the user's entryHistory
     user.entryHistory.push(entry._id);

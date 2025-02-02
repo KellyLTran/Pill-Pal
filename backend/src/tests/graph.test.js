@@ -32,6 +32,9 @@ describe('Concentration graph routes', () => {
       password: 'password',
     });
 
+    await user.save();
+    await medication.save();
+
     // Simulate adding a medication entry for the user
     await request(app).post(`/api/entry/${user._id}/${medication._id}`);
   });
