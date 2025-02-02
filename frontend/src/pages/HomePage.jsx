@@ -57,8 +57,6 @@ const HomePage = () => {
           </div>
 
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Ready to Add an Entry?</h2>
-            <p className="mb-6">Click the button below to record a new medication entry.</p>
             <Button
               variant="primary"
               onClick={() => setIsModalVisible(true)}
@@ -69,7 +67,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <ScrollableGraph graphData={graphData}/>
+        <ScrollableGraph graphData={graphData} sleepDate={sleepDate}/>
       </div>
 
       <AddEntryModal
