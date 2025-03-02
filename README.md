@@ -1,11 +1,12 @@
 # 💊 Pill Pal
+
+It’s already hard enough when ADHD takes a toll on your productivity—now throw in the challenge of figuring out when your medication will kick in, when they’ll wear off, or why you’re still awake at 2 a.m. after taking a late dose. That’s where Pill Pal comes in.
+
 [Pill Pal on Devpost](https://devpost.com/software/pill-pal-x81rk6)
 
 ---
 
 ## 🌟 What is Pill Pal?
-
-It’s already hard enough when ADHD takes a toll on your productivity—now throw in the challenge of figuring out when your medication will kick in, when they’ll wear off, or why you’re still awake at 2 a.m. after taking a late dose. That’s where Pill Pal comes in. 
 
 Pill Pal uses historical healthcare data and trends on ADHD medication effectiveness to inform a future-focused solution that focuses on visualizing effectiveness overtime in a scalable, scrollable flow chart tailored to the user’s selection of medication type, dosage, and time taken. 
 
